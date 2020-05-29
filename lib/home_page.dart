@@ -1,0 +1,79 @@
+import 'package:flutter/cupertino.dart';
+import'package:flutter/material.dart';
+import 'package:testing/datahandling.dart';
+import 'auth.dart';
+import 'allusers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'datahandling.dart';
+
+class HomePage extends StatefulWidget {
+  HomePage({this.auth, this.onSignedOut});
+  final BaseAuth auth;
+  final VoidCallback onSignedOut;
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+  void _signOut() async{
+    try {
+      await widget.auth.signOut();
+      widget.onSignedOut();
+    } catch(e) {
+      print(e);
+    }
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title:Text('DashBoard'),
+        centerTitle: true,
+      ),
+      drawer:Drawer(
+        child: ListView(
+          children: <Widget>[
+            new UserAccountsDrawerHeader (
+              accountName: new Text('hi'),
+              accountEmail: new Text('bye'),
+              currentAccountPicture: new CircleAvatar(
+                backgroundImage: NetworkImage('https://images.unsplash.com/photo-1579123480439-dcc379da4707?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80'),
+                //child: Text('hi'),
+                backgroundColor: Colors.green,
+              ),
+            ),
+            new ListTile(
+              title: new Text('All user page'),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (BuildContext context) => new AllUsersPage()));
+              },
+            ),
+
+            new ListTile(
+              title: new Text('Doctors'),
+              onTap: () {
+                Auth().authorizeAccess(context);
+              },
+            ),
+            new ListTile(
+              title:new Text('Logout'),
+              onTap: _signOut,
+            ),
+          ],
+        ),
+      ),
+      body: Center(
+        child: Text('hello'),
+      )
+    );
+  }
+}
