@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import'package:flutter/material.dart';
+import 'package:testing/chatroom.dart';
 import 'package:testing/datahandling.dart';
 import 'auth.dart';
 import 'allusers.dart';
@@ -39,18 +40,19 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           children: <Widget>[
             new UserAccountsDrawerHeader (
-              accountName: new Text('hi'),
-              accountEmail: new Text('bye'),
+              //accountName: new Text('hi'),
+              //accountEmail: new Text('bye'),
               currentAccountPicture: new CircleAvatar(
-                backgroundImage: NetworkImage('https://images.unsplash.com/photo-1579123480439-dcc379da4707?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80'),
-                //child: Text('hi'),
-                backgroundColor: Colors.green,
+                //backgroundImage: NetworkImage('https://images.unsplash.com/photo-1579123480439-dcc379da4707?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80'),
+                child: Text('hi'),
+                backgroundColor: Colors.greenAccent,
               ),
             ),
             new ListTile(
-              title: new Text('All user page'),
+              title: new Text('Patient'),
               onTap: () {
                 Navigator.of(context).pop();
+
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
@@ -62,6 +64,16 @@ class _HomePageState extends State<HomePage> {
               title: new Text('Doctors'),
               onTap: () {
                 Auth().authorizeAccess(context);
+              },
+            ),
+            new ListTile(
+              title: new Text('Chatroom'),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (BuildContext context) => new ChatRoom()));
               },
             ),
             new ListTile(

@@ -10,7 +10,7 @@ class _AllUsersPageState extends State<AllUsersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        title: Text('everyone'),
+        title: Text('Patient'),
       ),
     );
   }
