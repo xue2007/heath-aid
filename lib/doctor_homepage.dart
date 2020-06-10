@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:testing/patient_status.dart';
 
 import 'auth.dart';
+import 'chatroom.dart';
 
 class AllUsersPage extends StatefulWidget {
   AllUsersPage({this.auth, this.onSignedOut});
@@ -25,12 +27,55 @@ class _AllUsersPageState extends State<AllUsersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(
-        title: Text('Doctor'),
+      appBar: AppBar(
+        title: Text('Doctor Homepage'),
+        centerTitle: true,
       ),
-      body: new RaisedButton(
-           child: new Text('logout'),
-          onPressed: _signOut),
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            new UserAccountsDrawerHeader(
+              //accountName: new Text('hi'),
+              //accountEmail: new Text('bye'),
+              currentAccountPicture: new CircleAvatar(
+                //backgroundImage: NetworkImage('https://images.unsplash.com/photo-1579123480439-dcc379da4707?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80'),
+                child: Text('hi'),
+                backgroundColor: Colors.greenAccent,
+              ),
+            ),
+            new ListTile(
+              title: new Text('My Patient Status'),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (BuildContext context) => new PatientPage()));
+              },
+            ),
+            new ListTile(
+              title: new Text('Doctors'),
+              onTap: () {
+                Auth().authorizeAccess(context);
+              },
+            ),
+            new ListTile(
+              title: new Text('Chatroom'),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (BuildContext context) => new ChatRoom()));
+              },
+            ),
+            new ListTile(
+              title: new Text('Logout'),
+              onTap: _signOut,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
