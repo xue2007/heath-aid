@@ -27,7 +27,6 @@ class Auth implements BaseAuth {
     return user.uid;
   }
 
-
   Future<void> signOut() async {
     return FirebaseAuth.instance.signOut();
 }
@@ -46,7 +45,6 @@ class Auth implements BaseAuth {
             print('Not Authorized');
           }
         }
-
       });
     });
   }

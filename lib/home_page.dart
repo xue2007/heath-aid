@@ -52,7 +52,6 @@ class _HomePageState extends State<HomePage> {
               title: new Text('Patient'),
               onTap: () {
                 Navigator.of(context).pop();
-
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
@@ -83,9 +82,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: Center(
-        child: Text('hello'),
-      )
     );
   }
 }
