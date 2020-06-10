@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:testing/chatroom.dart';
 import 'package:testing/datahandling.dart';
+import 'package:testing/user_profile.dart';
 import 'auth.dart';
-import 'allusers.dart';
+import 'doctor_homepage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'datahandling.dart';
@@ -18,28 +19,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-  void _signOut() async{
+  void _signOut() async {
     try {
       await widget.auth.signOut();
       widget.onSignedOut();
-    } catch(e) {
+    } catch (e) {
       print(e);
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:Text('DashBoard'),
+        title: Text('DashBoard'),
         centerTitle: true,
       ),
-      drawer:Drawer(
+      drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            new UserAccountsDrawerHeader (
+            new UserAccountsDrawerHeader(
               //accountName: new Text('hi'),
               //accountEmail: new Text('bye'),
               currentAccountPicture: new CircleAvatar(
@@ -49,16 +48,15 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             new ListTile(
-              title: new Text('Patient'),
+              title: new Text('My Health Record'),
               onTap: () {
                 Navigator.of(context).pop();
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (BuildContext context) => new AllUsersPage()));
+                        builder: (BuildContext context) => new RecordPage()));
               },
             ),
-
             new ListTile(
               title: new Text('Doctors'),
               onTap: () {
@@ -76,7 +74,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             new ListTile(
-              title:new Text('Logout'),
+              title: new Text('Logout'),
               onTap: _signOut,
             ),
           ],
