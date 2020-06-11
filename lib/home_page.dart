@@ -58,12 +58,6 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             new ListTile(
-              title: new Text('Doctors'),
-              onTap: () {
-                Auth().authorizeAccess(context);
-              },
-            ),
-            new ListTile(
               title: new Text('Chatroom'),
               onTap: () {
                 Navigator.of(context).pop();
