@@ -5,15 +5,107 @@ class PatientPage extends StatefulWidget {
   _PatientPageState createState() => _PatientPageState();
 }
 
-class _PatientPageState extends State<PatientPage> {
+class _PatientPageState extends State<PatientPage> with SingleTickerProviderStateMixin{
+  TabController _tabController;
+  ScrollController _scrollController;
+
+  void initState() {
+    _tabController = new TabController(length: 3, vsync: this);
+  _scrollController = new ScrollController();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: new Text('Patient status'),
-        centerTitle: true,
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home:Scaffold(
+        body:NestedScrollView(
+          controller: _scrollController,
+          headerSliverBuilder: (BuildContext contest, bool innerbox){
+            return <Widget>[
+              SliverAppBar(
+                actions: <Widget>[
+                  IconButton(onPressed: (){
 
+                  },icon: Icon(Icons.search),),
+                  //Container(width:10.0,),
+                  IconButton(onPressed: (){
+
+                  },icon: Icon(Icons.more_vert),)
+
+                ],
+                pinned: true,
+                floating: true,
+                centerTitle: true,
+                backgroundColor: Colors.blueAccent,
+                title: Text('Patient Status'),
+                bottom:TabBar(
+                  indicatorWeight: 4.0,
+                  indicatorColor: Colors.white,
+                  controller: _tabController,
+                  tabs: [
+                    Tab(
+                      text: 'Unchecked',
+                    ),
+                    Tab(
+                      text:'Checked',
+                    ),
+                    Tab(
+                      text: 'Favourite',
+                    ),
+                  ]
+                )
+              )
+            ];
+          },
+          body: TabBarView(
+            controller:  _tabController,
+            children: [
+              PatientInformation(),
+              Text('Unchecked'),
+              Text('Favourite'),
+            ],
+          ),
+        ),
+      ),
     );
   }
+}
+
+class PatientInformation extends StatefulWidget {
+
+  PatientInformationState createState() => PatientInformationState();
+
+
+}
+class PatientInformationState extends State<PatientInformation> {
+
+  List<String> names = [
+   'a',
+   'b',
+   'c',
+ ];
+ List<String> text = [
+   'hello',
+   'bye',
+   'yo'
+ ];
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: names.length,
+      itemBuilder:(context,index){
+        return ListTile(
+          leading: CircleAvatar(
+            child:Text('hi'),
+          ),
+          title: Text(names [index]),
+          subtitle: Text(text[index]),
+          trailing: Text('11:00 AM')
+        );
+  });
+
+  }
+  
 }
