@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:testing/chatroom.dart';
+import 'package:testing/data_upload_page.dart';
 import 'package:testing/datahandling.dart';
 import 'package:testing/user_profile.dart';
 import 'auth.dart';
@@ -74,6 +75,24 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      body: Center(
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+        RaisedButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (BuildContext context) => new HealthForm()));
+          },
+          child: Text('Upload Health Data', style: TextStyle(fontSize: 20)),
+        ),
+        SizedBox(height: 30),
+        RaisedButton(
+          onPressed: () {},
+          child: Text('View My Health Data', style: TextStyle(fontSize: 20)),
+        )
+      ])),
     );
   }
 }
