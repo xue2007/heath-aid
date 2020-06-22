@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'home_page.dart';
 
 class HealthForm extends StatefulWidget {
   @override
@@ -67,6 +68,18 @@ class _HealthFormState extends State<HealthForm> {
                 RaisedButton(
                   onPressed: () {},
                   child: Text('Upload', style: TextStyle(fontSize: 20)),
+                ),
+                SizedBox(height: 20),
+                RaisedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (BuildContext context) => HomePage()));
+                  },
+                  child: Text('Return to DashBoard',
+                      style: TextStyle(fontSize: 20)),
                 )
               ])),
     );

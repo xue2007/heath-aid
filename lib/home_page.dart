@@ -89,7 +89,13 @@ class _HomePageState extends State<HomePage> {
         ),
         SizedBox(height: 30),
         RaisedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pop();
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (BuildContext context) => RecordPage()));
+          },
           child: Text('View My Health Data', style: TextStyle(fontSize: 20)),
         )
       ])),
