@@ -34,18 +34,18 @@ Widget chatRoomList() {
 
   @override
   void initState() {
-   // getUserInfo();
+    getUserInfo();
     super.initState();
   }
 
- //getUserInfo() async {
-    //Constants.myName = await HelperFunctions.getUserNameSharedPreference();
-  //    databaseMethods.getChatRooms(Constants.myName).then((value){
-//      setState(() {
-//        chatRoomStream = value;
-//      });
-//    });
-//}
+ getUserInfo() async {
+    Constants.myName = await HelperFunctions.getUserNameSharedPreference();
+      databaseMethods.getChatRooms(Constants.myName).then((value){
+      setState(() {
+       chatRoomStream = value;
+      });
+   });
+}
 
   @override
   Widget build(BuildContext context) {

@@ -1,11 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 class DataBase {
 
+  Future<void> addUserInfo(userData) async {
+    Firestore.instance.collection("users").add(userData).catchError((e) {
+      print(e.toString());
+    });
+  }
+
+  getUserInfo(String email) async {
+    return Firestore.instance
+        .collection("users")
+        .where("email", isEqualTo: email)
+        .getDocuments()
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
   getUserByUsername(String username) async {
     return await Firestore.instance.collection('users')
         .where('name',isEqualTo: username)
         .getDocuments();
-
   }
 
   getUserByUserEmail(String userEmail) async {

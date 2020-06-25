@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:testing/database.dart';
 import 'auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import'helper.dart';
+import 'database.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({this.auth, this.onSignedIn});
 
   final BaseAuth auth;
   final VoidCallback onSignedIn;
+
 
 
   @override
@@ -18,10 +22,12 @@ class LoginPage extends StatefulWidget {
   }
 
   class _LoginPageState extends State<LoginPage> {
+  DataBase databaseMethods = new DataBase();
   final ky = new GlobalKey<FormState>();
   String _email;
   String _password;
   String _role;
+  String _name;
   FormType _formType = FormType.login;
 
 
@@ -40,11 +46,30 @@ class LoginPage extends StatefulWidget {
     try {
       if(_formType == FormType.login) {
         String userId = await widget.auth.signInWithEmailAndPassWord(_email, _password);
+        QuerySnapshot userInfoSnapshot =
+        await databaseMethods.getUserInfo(_email);
+
+        HelperFunctions.saveUserLoggedInSharedPreference(true);
+        HelperFunctions.saveUserNameSharedPreference(
+            userInfoSnapshot.documents[0].data["name"]);
+        HelperFunctions.saveUserEmailSharedPreference(
+            userInfoSnapshot.documents[0].data["email"]);
         print('Signed in: ${userId}');
+
 
       } else {
         String user = await widget.auth.createUserWithEmailAndPassWord(_email, _password);
-        Firestore.instance.collection('users').document(user).setData({'email': _email,'uid': user,'role': _role});
+        Firestore.instance.collection('users').document(user).setData({'email': _email,'uid': user,'role': _role, 'name':_name});
+        Map<String,String> userDataMap = {
+          "name" : _name,
+          "email" : _email
+        };
+
+        databaseMethods.addUserInfo(userDataMap);
+
+        HelperFunctions.saveUserLoggedInSharedPreference(true);
+        HelperFunctions.saveUserNameSharedPreference(_name);
+        HelperFunctions.saveUserEmailSharedPreference(_email);
         print('Registered user: ${user}');
 
       }
@@ -95,20 +120,43 @@ class LoginPage extends StatefulWidget {
   }
 
   List<Widget> inputs() {
-    return [
-      new TextFormField(
-        decoration: new InputDecoration(labelText: 'Email'),
-        validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
-        onSaved: (value) => _email = value,
-      ),
-      new TextFormField(
-        decoration: new InputDecoration(labelText:'Password'),
-        obscureText: true,
-        validator: (x) => x.isEmpty ? 'Password can\'t be empty' : null,
-        onSaved: (x) => _password = x,
-      ),
 
+      if(_formType == FormType.login) {
+        return [
+        new TextFormField(
+          decoration: new InputDecoration(labelText: 'Email'),
+          validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
+          onSaved: (value) => _email = value,
+        ),
+        new TextFormField(
+          decoration: new InputDecoration(labelText: 'Password'),
+          obscureText: true,
+          validator: (x) => x.isEmpty ? 'Password can\'t be empty' : null,
+          onSaved: (x) => _password = x,
+        ),
     ];
+      } else {
+        return [
+          new TextFormField(
+            decoration: new InputDecoration(labelText: 'Email'),
+            validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
+            onSaved: (value) => _email = value,
+          ),
+          new TextFormField(
+            decoration: new InputDecoration(labelText: 'Password'),
+            obscureText: true,
+            validator: (x) => x.isEmpty ? 'Password can\'t be empty' : null,
+            onSaved: (x) => _password = x,
+          ),
+        new TextFormField(
+          decoration: new InputDecoration(labelText:'Name'),
+          obscureText: true,
+          validator: (x) => x.isEmpty ? 'Name can\'t be empty' : null,
+          onSaved: (x) => _name = x,
+        ),
+    ];
+      }
+
   }
 
   List<Widget> submitButtons() {
