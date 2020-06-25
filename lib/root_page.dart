@@ -15,7 +15,9 @@ class RootPage extends StatefulWidget {
   State<StatefulWidget> createState() => new _RootPageState();
 }
 
-enum AuthStates { firstPage, signedIn, signedInDoctor }
+enum AuthStates {
+  firstPage, signedIn, signedInDoctor
+}
 
 class _RootPageState extends State<RootPage> {
   AuthStates authStatus = AuthStates.firstPage;
@@ -44,11 +46,20 @@ class _RootPageState extends State<RootPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    widget.auth.currentUser().then((id) {
-      setState(() {
-        //authStatus = id == null ? AuthStates.firstPage : AuthStates.signedIn;
+    checkDoctor();
+    try {
+      widget.auth.currentUser().then((id) {
+        print("AuthStatus is now ${authStatus.toString()}");
+        setState(() {
+          //authStatus = id == null ? AuthStates.firstPage : AuthStates.signedIn;
+          if (doctor == true) {
+            return AuthStates.signedInDoctor;
+          } else {
+            return AuthStates.signedIn;
+          }
+        });
       });
-    });
+    } catch (e){}
   }
 
   void _signedIn() {

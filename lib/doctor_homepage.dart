@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:testing/patient_status.dart';
+import 'general_profile.dart';
 
 import 'auth.dart';
 import 'chatroom.dart';
@@ -67,6 +68,16 @@ class _AllUsersPageState extends State<AllUsersPage> {
                     context,
                     new MaterialPageRoute(
                         builder: (BuildContext context) => new ChatRoom()));
+              },
+            ),
+            new ListTile(
+              title: new Text('Profile'),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (BuildContext context) => new Profile()));
               },
             ),
             new ListTile(

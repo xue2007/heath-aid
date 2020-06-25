@@ -107,6 +107,7 @@ class LoginPage extends StatefulWidget {
         validator: (x) => x.isEmpty ? 'Password can\'t be empty' : null,
         onSaved: (x) => _password = x,
       ),
+
     ];
   }
 
