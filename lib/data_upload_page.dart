@@ -12,7 +12,17 @@ class _HealthFormState extends State<HealthForm> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-          appBar: AppBar(title: Text('Health Upload Form')),
+          appBar: AppBar(
+              leading: BackButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (BuildContext context) => HomePage()));
+                },
+              ),
+              title: Text('Health Upload Form')),
           body: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -69,18 +79,6 @@ class _HealthFormState extends State<HealthForm> {
                   onPressed: () {},
                   child: Text('Upload', style: TextStyle(fontSize: 20)),
                 ),
-                SizedBox(height: 20),
-                RaisedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (BuildContext context) => HomePage()));
-                  },
-                  child: Text('Return to DashBoard',
-                      style: TextStyle(fontSize: 20)),
-                )
               ])),
     );
   }

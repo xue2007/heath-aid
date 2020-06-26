@@ -17,6 +17,15 @@ class _RecordPageState extends State<RecordPage> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
+            leading: BackButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (BuildContext context) => HomePage()));
+              },
+            ),
             title: Text('Patient Health Entries'),
             backgroundColor: Colors.blue,
             centerTitle: true),
@@ -36,16 +45,6 @@ class _RecordPageState extends State<RecordPage> {
               ])
             ]),
             SizedBox(height: 30),
-            RaisedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (BuildContext context) => HomePage()));
-                },
-                child:
-                    Text('Return to DashBoard', style: TextStyle(fontSize: 20)))
           ],
         ),
       ),
