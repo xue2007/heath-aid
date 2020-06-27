@@ -29,20 +29,20 @@ class DataBase {
         .getDocuments();
 
   }
-  createChatRoom(String id,chatRoomMap) {
+  Future<bool> createChatRoom(String id,chatRoomMap) {
     Firestore.instance.collection('Chatroom')
         .document(id).setData(chatRoomMap).catchError((e) {
         print(e.toString());
     });
   }
-  addConversationMessages(String roomId, messageMap){
-    Firestore.instance.collection('ChatRoom')
+  Future<void> addConversationMessages(String roomId, messageMap){
+    Firestore.instance.collection('Chatroom')
         .document(roomId)
         .collection('chats')
         .add(messageMap).catchError((e){print(e.toString());});
   }
-  getConversationMessages(String roomId) async{
-    return await Firestore.instance.collection('ChatRoom')
+  getConversationMessages(String roomId) async {
+    return await Firestore.instance.collection('Chatroom')
         .document(roomId)
         .collection('chats')
         .orderBy('time',descending: false)
@@ -50,7 +50,7 @@ class DataBase {
   }
   getChatRooms(String id) async{
     return await Firestore.instance
-        .collection("ChatRoom")
+        .collection("Chatroom")
         .where('users',arrayContains: id)
         .snapshots();
   }

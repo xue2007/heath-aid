@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:testing/Constants.dart';
 import 'package:testing/database.dart';
 import 'auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'auth_provider.dart';
 import'helper.dart';
 import 'database.dart';
 
@@ -31,6 +34,27 @@ class LoginPage extends StatefulWidget {
   FormType _formType = FormType.login;
 
 
+  void checkDoctor() {
+    FirebaseAuth.instance.currentUser().then((user) {
+      Firestore.instance
+          .collection('/users')
+          .where('uid', isEqualTo: user.uid)
+          .getDocuments()
+          .then((docs) {
+        if (docs.documents[0].exists) {
+          print('checked');
+          if (docs.documents[0].data['role'] == 'doctor') {
+            Constants.checkRole = true;
+            print('doctor is true');
+          } else {
+            Constants.checkRole = false;
+            print('doctor is false');
+          }
+        }
+      });
+    });
+  }
+
   bool validateAndSave() {
     final form = ky.currentState;
     if(form.validate()){
@@ -44,36 +68,40 @@ class LoginPage extends StatefulWidget {
   void validateAndSubmit() async {
   if(validateAndSave()) {
     try {
+      final BaseAuth auth = AuthProvider.of(context).auth;
       if(_formType == FormType.login) {
-        String userId = await widget.auth.signInWithEmailAndPassWord(_email, _password);
+
+        String userId = await auth.signInWithEmailAndPassWord(_email, _password);
+        checkDoctor();
         QuerySnapshot userInfoSnapshot =
         await databaseMethods.getUserInfo(_email);
-
         HelperFunctions.saveUserLoggedInSharedPreference(true);
         HelperFunctions.saveUserNameSharedPreference(
             userInfoSnapshot.documents[0].data["name"]);
         HelperFunctions.saveUserEmailSharedPreference(
             userInfoSnapshot.documents[0].data["email"]);
+        HelperFunctions.saveUserRoleSharedPreference(
+            userInfoSnapshot.documents[0].data["role"]);
         print('Signed in: ${userId}');
 
-
       } else {
-        String user = await widget.auth.createUserWithEmailAndPassWord(_email, _password);
-        Firestore.instance.collection('users').document(user).setData({'email': _email,'uid': user,'role': _role, 'name':_name});
-        Map<String,String> userDataMap = {
+       /* Map<String,String> userDataMap = {
           "name" : _name,
-          "email" : _email
+          "email" : _email,
+          "role":_role
         };
-
-        databaseMethods.addUserInfo(userDataMap);
-
+        databaseMethods.addUserInfo(userDataMap);*/
         HelperFunctions.saveUserLoggedInSharedPreference(true);
         HelperFunctions.saveUserNameSharedPreference(_name);
         HelperFunctions.saveUserEmailSharedPreference(_email);
+        String user = await auth.createUserWithEmailAndPassWord(_email, _password);
+        Firestore.instance.collection('users').document(user).setData({'email': _email,'uid': user,'role': _role, 'name':_name});
+        checkDoctor();
         print('Registered user: ${user}');
 
       }
       widget.onSignedIn();
+
     } catch(e){
         print('Error: $e');
     }

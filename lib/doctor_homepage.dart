@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:testing/Constants.dart';
+import 'package:testing/auth_provider.dart';
 import 'package:testing/patient_status.dart';
 import 'general_profile.dart';
 
 import 'auth.dart';
 import 'chatroom.dart';
+import 'login_page.dart';
 
 class AllUsersPage extends StatefulWidget {
   AllUsersPage({this.auth, this.onSignedOut});
@@ -18,8 +21,10 @@ class _AllUsersPageState extends State<AllUsersPage> {
 
   void _signOut() async{
     try {
-      await widget.auth.signOut();
+      final BaseAuth auth = AuthProvider.of(context).auth;
+      await auth.signOut();
       widget.onSignedOut();
+
     } catch(e) {
       print(e);
     }
@@ -36,7 +41,7 @@ class _AllUsersPageState extends State<AllUsersPage> {
         child: ListView(
           children: <Widget>[
             new UserAccountsDrawerHeader(
-              //accountName: new Text('hi'),
+              accountName: new Text(Constants.myName),
               //accountEmail: new Text('bye'),
               currentAccountPicture: new CircleAvatar(
                 //backgroundImage: NetworkImage('https://images.unsplash.com/photo-1579123480439-dcc379da4707?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80'),

@@ -13,12 +13,13 @@ class _SearchScreenState extends State<SearchScreen> {
   DataBase databaseMethods = new DataBase();
   TextEditingController searchForController = new TextEditingController();
   QuerySnapshot searchSnapshot;
-  Widget SearchList() {
+
+  Widget searchList() {
     return searchSnapshot !=null ? ListView.builder(
         itemCount: searchSnapshot.documents.length,
         shrinkWrap: true,
         itemBuilder: (context,index){
-          return SearchTile(
+          return searchTile(
             name: searchSnapshot.documents[index].data['name'],
             email: searchSnapshot.documents[index].data['email'],
           );
@@ -33,16 +34,15 @@ class _SearchScreenState extends State<SearchScreen> {
           });
     });
   }
-  createChat({BuildContext context, String user1}) {
-    if(user1 !=Constants.myName) {
+  createChat(String user1) {
+    if(user1 != Constants.myName) {
       String chatRoomId = getChatRoomId(user1, Constants.myName);
-
       List<String> users = [user1, Constants.myName];
       Map<String, dynamic> chatRoomMap = {
         'users': users,
         'chatRoomId': chatRoomId
       };
-      DataBase().createChatRoom(chatRoomId, chatRoomMap);
+      databaseMethods.createChatRoom(chatRoomId, chatRoomMap);
       Navigator.push(context, MaterialPageRoute(
           builder: (context) => ConversationScreen(
             chatRoomId
@@ -52,7 +52,7 @@ class _SearchScreenState extends State<SearchScreen> {
       print('you cannot send message to yourself');
     }
   }
-  Widget SearchTile({String name,
+  Widget searchTile({String name,
    String email}) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24,vertical: 16),
@@ -68,9 +68,7 @@ class _SearchScreenState extends State<SearchScreen> {
           Spacer(),
           GestureDetector(
             onTap: () {
-              createChat(
-                user1: name
-              );
+              createChat(name);
 
             },
             child: Container(
@@ -141,7 +139,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ],
         ),
             ),
-            SearchList()
+            searchList()
     ],
         ),
       ),

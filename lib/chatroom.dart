@@ -53,8 +53,10 @@ Widget chatRoomList() {
       appBar: new AppBar(
         title: Text('Chat'),
       ),
-      body:
-      chatRoomList(),
+      body:Container(
+     child: chatRoomList(),
+      ),
+
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.search),
         onPressed: () {
@@ -80,17 +82,27 @@ class ChatRoomsTile extends StatelessWidget {
         ));
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal:24,vertical: 16),
+        padding: EdgeInsets.symmetric(horizontal:24,vertical: 10),
         child: Row(
           children: [
             Container(
+              height: 30,
+              width:30,
               decoration: BoxDecoration(
                 color: Colors.blue,
-                borderRadius: BorderRadius.circular(40)
+                borderRadius: BorderRadius.circular(30)
               ),
-              child: Text('${name.substring(0,1).toUpperCase()}'),
+              child: Text(name.substring(0,1),
+              textAlign:TextAlign.center,
+                style: TextStyle(
+                  color:Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                ),
+
+              ),
             ),
-            SizedBox(width: 8,),
+            SizedBox(width: 10,),
             Text(name)
           ],
         ),

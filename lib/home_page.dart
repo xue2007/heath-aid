@@ -1,14 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:testing/Constants.dart';
+import 'package:testing/auth_provider.dart';
 import 'package:testing/chatroom.dart';
 import 'package:testing/data_upload_page.dart';
-import 'package:testing/datahandling.dart';
+import 'package:testing/login_page.dart';
 import 'package:testing/user_profile.dart';
 import 'auth.dart';
-import 'doctor_homepage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'datahandling.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({this.auth, this.onSignedOut});
@@ -22,8 +20,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   void _signOut() async {
     try {
-      await widget.auth.signOut();
+      final BaseAuth auth = AuthProvider.of(context).auth;
+      await auth.signOut();
       widget.onSignedOut();
+
     } catch (e) {
       print(e);
     }
@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           children: <Widget>[
             new UserAccountsDrawerHeader(
-              //accountName: new Text('hi'),
+              accountName: new Text(Constants.myName),
               //accountEmail: new Text('bye'),
               currentAccountPicture: new CircleAvatar(
                 //backgroundImage: NetworkImage('https://images.unsplash.com/photo-1579123480439-dcc379da4707?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80'),
