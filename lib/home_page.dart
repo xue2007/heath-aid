@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:testing/Constants.dart';
-import 'package:testing/auth_provider.dart';
+
 import 'package:testing/chatroom.dart';
 import 'package:testing/data_upload_page.dart';
 import 'package:testing/login_page.dart';
 import 'package:testing/user_profile.dart';
 import 'auth.dart';
+import 'auth_provider.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({this.auth, this.onSignedOut});

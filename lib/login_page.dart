@@ -136,6 +136,12 @@ class LoginPage extends StatefulWidget {
       ),
       body: new Container(
         padding: EdgeInsets.all(15.0),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/cool1.jpg'),
+            fit: BoxFit.cover
+          )
+        ),
         child: new Form(
           key: ky,
           child: new Column(
@@ -190,15 +196,53 @@ class LoginPage extends StatefulWidget {
   List<Widget> submitButtons() {
     if(_formType == FormType.login) {
       return [
-        new RaisedButton(
-          child: new Text('Login', style: new TextStyle(fontSize: 20)),
-          onPressed: validateAndSubmit,
+       Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            const SizedBox(height: 15),
+            RaisedButton(
+              onPressed: validateAndSubmit,
+              textColor: Colors.white,
+              padding: const EdgeInsets.all(0),
+              child: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: <Color>[
+                      Color(0xFF0D47A1),
+                      Color(0xFF1976D2),
+                      Color(0xFF42A5F5),
+                    ],
+                  ),
+                ),
+                padding: const EdgeInsets.only(left:160,right:160,top: 8,bottom: 8),
+                child:
+                const Text('Login', style: TextStyle(fontSize: 20)),
+              ),
+            ),
+            const SizedBox(height: 5),
+            RaisedButton(
+              onPressed: moveToRegister,
+              textColor: Colors.white,
+              padding: const EdgeInsets.all(0.0),
+              child: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: <Color>[
+                      Color(0xFF9C27B0),
+                      Color(0xFFE040FB),
+                      Color(0xFF9C27B0),
+                    ],
+                  ),
+                ),
+                padding: const EdgeInsets.only(left:103,right:103,top: 10,bottom: 10),
+                child:
+                const Text('Create an Account', style: TextStyle(fontSize: 20)),
+              ),
+            ),
+          ],
         ),
-        new RaisedButton(
-          child: new Text(
-              'Create an account', style: new TextStyle(fontSize: 20)),
-          onPressed: moveToRegister,
-        )
+      )
       ];
     } else {
       return [

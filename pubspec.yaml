@@ -55,6 +55,9 @@ flutter:
     - assets/heart1.jpg
     - assets/search_white.png
     - assets/send.png
+    - assets/health.jpg
+    - assets/cool1.jpg
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

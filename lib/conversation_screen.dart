@@ -66,10 +66,12 @@ class _ConversationScreenState extends State<ConversationScreen> {
       ),
       body: Container(
         child: Stack(
-          children: [
+          children: <Widget>[
             chatMessageList(),
+
             Container(
               alignment: Alignment.bottomCenter,
+
               width: MediaQuery
                   .of(context)
                   .size

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:testing/Constants.dart';
-import 'package:testing/auth_provider.dart';
-import 'package:testing/patient_status.dart';
-import 'general_profile.dart';
-
 import 'auth.dart';
+
+import 'package:testing/patient_status.dart';
+import 'auth_provider.dart';
+import 'general_profile.dart';
 import 'chatroom.dart';
-import 'login_page.dart';
+
 
 class AllUsersPage extends StatefulWidget {
   AllUsersPage({this.auth, this.onSignedOut});
