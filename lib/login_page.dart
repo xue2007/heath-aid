@@ -9,10 +9,11 @@ import'helper.dart';
 import 'database.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({this.auth, this.onSignedIn});
+  LoginPage({this.auth, this.onSignedIn,this.backToMain});
 
   final BaseAuth auth;
   final VoidCallback onSignedIn;
+  final VoidCallback backToMain;
 
 
 
@@ -21,7 +22,7 @@ class LoginPage extends StatefulWidget {
 }
   enum FormType {
   login,
-    register
+    register,
   }
 
   class _LoginPageState extends State<LoginPage> {
@@ -132,7 +133,12 @@ class LoginPage extends StatefulWidget {
     return new Scaffold(
         resizeToAvoidBottomPadding: false,
       appBar: new AppBar(
-        title: new Text('HealthAid Login Page'),
+        leading:BackButton(
+            onPressed: () {
+              widget.backToMain();
+            }
+      ),
+        title: new Text('HealthAid Patient Login Page'),
       ),
       body: new Container(
         padding: EdgeInsets.all(15.0),

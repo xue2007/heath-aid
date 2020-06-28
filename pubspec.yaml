@@ -57,6 +57,8 @@ flutter:
     - assets/send.png
     - assets/health.jpg
     - assets/cool1.jpg
+    - assets/patient.jpg
+    - assets/doctor.jpg
 
 
 

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:testing/Constants.dart';
 import 'package:testing/doctor_homepage.dart';
+import 'LoginPageDoctor.dart';
 import 'auth.dart';
 import 'auth_provider.dart';
 import 'login_page.dart';
@@ -15,15 +16,15 @@ class RootPage extends StatefulWidget {
 }
 
 enum AuthStates {
-  firstPage, signedIn, signedInDoctor,notDetermined
+  firstPagePatient, signedInPatient, signedInDoctor,notDetermined,firstPageDoctor
 }
 
 class _RootPageState extends State<RootPage> {
-  AuthStates authStatus = AuthStates.firstPage;
+  AuthStates authStatus = AuthStates.notDetermined;
 
-  void _signedIn() {
+  void _signedInPatient() {
     setState(() {
-      authStatus = AuthStates.signedIn;
+      authStatus = AuthStates.signedInPatient;
     });
   }
 
@@ -33,12 +34,19 @@ class _RootPageState extends State<RootPage> {
     });
   }
 
-  void _signedOut() {
+  void _signedOutPatient() {
     setState(() {
-      authStatus = AuthStates.firstPage;
+      authStatus = AuthStates.firstPagePatient;
     });
   }
- /*@override
+
+    void _signedOutDoctor() {
+      setState(() {
+        authStatus = AuthStates.firstPageDoctor;
+      });
+    }
+
+  /*  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     try {
@@ -61,38 +69,132 @@ class _RootPageState extends State<RootPage> {
   }
 */
 
-  @override
-  Widget build(BuildContext context) {
-    switch (authStatus) {
-      case AuthStates.firstPage:
-        return LoginPage(
-          //auth: widget.auth,
-          onSignedIn: Constants.checkRole == true ? _signedInDoctor : _signedIn,
-        );
-      case AuthStates.signedIn:
-        return HomePage(
-          //auth: widget.auth,
-          onSignedOut: _signedOut,
-        );
-      case AuthStates.signedInDoctor:
-        return AllUsersPage(
-          //auth: widget.auth,
-          onSignedOut: _signedOut,
-        );
-      case AuthStates.notDetermined:
-        return _buildWaitingScreen();
+    @override
+    Widget build(BuildContext context) {
+      switch (authStatus) {
+        case AuthStates.firstPagePatient:
+          return LoginPage(
+            //auth: widget.auth,
+            onSignedIn: _signedInPatient,
+            backToMain: (){
+              setState(() {
+              authStatus = AuthStates.notDetermined;
+            });},
+
+          );
+        case AuthStates.signedInPatient:
+          return HomePage(
+            //auth: widget.auth,
+            onSignedOut: _signedOutPatient,
+          );
+        case AuthStates.signedInDoctor:
+          return AllUsersPage(
+            //auth: widget.auth,
+            onSignedOut: _signedOutDoctor,
+          );
+        case AuthStates.firstPageDoctor:
+          return LoginPageDoctor(
+            onSignedIn: _signedInDoctor,
+            backToMain: (){
+              setState(() {
+                authStatus = AuthStates.notDetermined;
+              });},
+          );
+        case AuthStates.notDetermined:
+          return _buildWaitingScreen();
+      }
+      return null;
     }
-    return null;
+
+    Widget _buildWaitingScreen() {
+      return Scaffold(
+        body: Container(
+
+          alignment: Alignment.center,
+          child: Column(
+            children: <Widget>[
+              CircleAvatar(
+                radius:  100,
+                backgroundColor: Colors.black,
+                child: ClipOval(
+                  child: Image.asset("assets/doctor.jpg"),
+                ),
+              ),
+              RaisedButton(
+                onPressed:(){
+                  setState(() {
+                    authStatus = AuthStates.firstPageDoctor;
+                  });
+                  print('doctor');
+                  },
+                textColor: Colors.white,
+                padding: const EdgeInsets.all(0.0),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xFF9C27B0),
+                        Color(0xFFE040FB),
+                        Color(0xFF9C27B0),
+                      ],
+                    ),
+                  ),
+                  padding: const EdgeInsets.only(left:103,right:103,top: 10,bottom: 10),
+                  child:
+                  const Text('Doctor', style: TextStyle(fontSize: 20)),
+                ),
+
+              ),
+
+              SizedBox(
+                height: 20,
+              ),
+              CircleAvatar(
+                backgroundColor: Colors.black,
+                radius:  100,
+                child: ClipOval(
+                  child: Image.asset("assets/patient.jpg",),
+                ),
+              ),
+              RaisedButton(
+                onPressed:(){
+                  setState(() {
+                    authStatus = AuthStates.firstPagePatient;
+                  });
+                  print('patient');
+
+                },
+                textColor: Colors.white,
+                padding: const EdgeInsets.all(0.0),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xFF9C27B0),
+                        Color(0xFFE040FB),
+                        Color(0xFF9C27B0),
+                      ],
+                    ),
+                  ),
+                  padding: const EdgeInsets.only(left:103,right:103,top: 10,bottom: 10),
+                  child:
+                  const Text('Patient', style: TextStyle(fontSize: 20)),
+                ),
+
+              ),
+              SizedBox(
+                height:  0.13,
+              ),
+              SizedBox(
+                height: 5,
+              )
+            ],
+          )
+        ),
+        );
+    }
   }
 
-  Widget _buildWaitingScreen() {
-    return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
-}
+
 
 

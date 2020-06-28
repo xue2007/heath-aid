@@ -14,13 +14,9 @@ class _HealthFormState extends State<HealthForm> {
       home: Scaffold(
           appBar: AppBar(
               leading: BackButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (BuildContext context) => HomePage()));
-                },
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }
               ),
               title: Text('Health Upload Form')),
           body: Column(

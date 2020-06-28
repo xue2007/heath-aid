@@ -18,13 +18,9 @@ class _RecordPageState extends State<RecordPage> {
       home: Scaffold(
         appBar: AppBar(
             leading: BackButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (BuildContext context) => HomePage()));
-              },
+                onPressed: () {
+                  Navigator.pop(context);
+                }
             ),
             title: Text('Patient Health Entries'),
             backgroundColor: Colors.blue,
