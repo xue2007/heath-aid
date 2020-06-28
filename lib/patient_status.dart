@@ -10,7 +10,7 @@ class _PatientPageState extends State<PatientPage> with SingleTickerProviderStat
   ScrollController _scrollController;
 
   void initState() {
-    _tabController = new TabController(length: 3, vsync: this);
+    _tabController = new TabController(length: 2, vsync: this);
   _scrollController = new ScrollController();
   }
 
@@ -24,6 +24,11 @@ class _PatientPageState extends State<PatientPage> with SingleTickerProviderStat
           headerSliverBuilder: (BuildContext contest, bool innerbox){
             return <Widget>[
               SliverAppBar(
+                leading: BackButton(
+            onPressed: () {
+              Navigator.pop(context);
+            }
+            ),
                 actions: <Widget>[
                   IconButton(onPressed: (){
 
@@ -39,17 +44,18 @@ class _PatientPageState extends State<PatientPage> with SingleTickerProviderStat
                 centerTitle: true,
                 backgroundColor: Colors.blueAccent,
                 title: Text('Patient Status'),
+
                 bottom:TabBar(
                   indicatorWeight: 4.0,
                   indicatorColor: Colors.white,
                   controller: _tabController,
                   tabs: [
                     Tab(
-                      text: 'Unchecked',
+                      text: 'Patient',
                     ),
-                    Tab(
+                    /*Tab(
                       text:'Checked',
-                    ),
+                    ),*/
                     Tab(
                       text: 'Favourite',
                     ),
@@ -62,7 +68,7 @@ class _PatientPageState extends State<PatientPage> with SingleTickerProviderStat
             controller:  _tabController,
             children: [
               PatientInformation(),
-              Text('Unchecked'),
+              //Text('Patient'),
               Text('Favourite'),
             ],
           ),

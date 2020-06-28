@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:testing/root_page.dart';
 import 'home_page.dart';
 
 class HealthForm extends StatefulWidget {
+
   @override
   _HealthFormState createState() => _HealthFormState();
 }
@@ -10,15 +13,14 @@ class HealthForm extends StatefulWidget {
 class _HealthFormState extends State<HealthForm> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    globalContext = context;
+    return Scaffold(
           appBar: AppBar(
-              leading: BackButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  }
-              ),
-              title: Text('Health Upload Form')),
+              title: Text('Health Upload Form'),
+            leading: BackButton(
+              onPressed:()=> Navigator.pop(context),
+            ),
+          ),
           body: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -75,7 +77,6 @@ class _HealthFormState extends State<HealthForm> {
                   onPressed: () {},
                   child: Text('Upload', style: TextStyle(fontSize: 20)),
                 ),
-              ])),
-    );
+              ]));
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:testing/home_page.dart';
+import 'package:testing/root_page.dart';
 //import 'package:testing/datahandling.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
@@ -12,17 +14,16 @@ class RecordPage extends StatefulWidget {
 }
 
 class _RecordPageState extends State<RecordPage> {
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+
+    return Scaffold(
         appBar: AppBar(
-            leading: BackButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                }
-            ),
             title: Text('Patient Health Entries'),
+            leading: BackButton(
+              onPressed: ()=> Navigator.pop(context),
+            ),
             backgroundColor: Colors.blue,
             centerTitle: true),
         body: Column(
@@ -43,7 +44,7 @@ class _RecordPageState extends State<RecordPage> {
             SizedBox(height: 30),
           ],
         ),
-      ),
-    );
+      );
+
   }
 }

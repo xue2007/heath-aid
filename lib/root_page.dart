@@ -11,6 +11,7 @@ import 'home_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RootPage extends StatefulWidget {
+
   @override
   State<StatefulWidget> createState() => new _RootPageState();
 }
@@ -42,7 +43,7 @@ class _RootPageState extends State<RootPage> {
 
     void _signedOutDoctor() {
       setState(() {
-        authStatus = AuthStates.firstPageDoctor;
+       authStatus = AuthStates.firstPageDoctor;
       });
     }
 
@@ -73,27 +74,27 @@ class _RootPageState extends State<RootPage> {
     Widget build(BuildContext context) {
       switch (authStatus) {
         case AuthStates.firstPagePatient:
-          return LoginPage(
+          return new LoginPage(
             //auth: widget.auth,
             onSignedIn: _signedInPatient,
             backToMain: (){
               setState(() {
-              authStatus = AuthStates.notDetermined;
+                authStatus = AuthStates.notDetermined;
             });},
 
           );
         case AuthStates.signedInPatient:
-          return HomePage(
+          return new HomePage(
             //auth: widget.auth,
             onSignedOut: _signedOutPatient,
           );
         case AuthStates.signedInDoctor:
-          return AllUsersPage(
+          return new AllUsersPage(
             //auth: widget.auth,
             onSignedOut: _signedOutDoctor,
           );
         case AuthStates.firstPageDoctor:
-          return LoginPageDoctor(
+          return new LoginPageDoctor(
             onSignedIn: _signedInDoctor,
             backToMain: (){
               setState(() {
@@ -113,6 +114,8 @@ class _RootPageState extends State<RootPage> {
           alignment: Alignment.center,
           child: Column(
             children: <Widget>[
+              Text('Welcome To HealthAid',style: TextStyle(fontSize: 30),),
+              SizedBox(height: 60,),
               CircleAvatar(
                 radius:  100,
                 backgroundColor: Colors.black,

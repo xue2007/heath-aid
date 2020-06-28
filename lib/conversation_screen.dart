@@ -20,14 +20,16 @@ class _ConversationScreenState extends State<ConversationScreen> {
     return StreamBuilder(
       stream:chatMessageStream,
       builder: (context,snapshot){
-        return snapshot.hasData ? ListView.builder(
-            itemCount: snapshot.data.documents.length,
-            itemBuilder: (context,index) {
-              return MessageTile(
-                  message:snapshot.data.documents[index].data['message'],
-                  sendByMe: snapshot.data.documents[index].data['sendBy'] == Constants.myName
-              );
-            }) : Container();
+        return snapshot.hasData ? SafeArea(
+          child: ListView.builder(
+              itemCount: snapshot.data.documents.length,
+              itemBuilder: (context,index) {
+                return MessageTile(
+                    message:snapshot.data.documents[index].data['message'],
+                    sendByMe: snapshot.data.documents[index].data['sendBy'] == Constants.myName
+                );
+              }),
+        ) : Container();
       },
     );
   }
@@ -67,11 +69,9 @@ class _ConversationScreenState extends State<ConversationScreen> {
       body: Container(
         child: Stack(
           children: <Widget>[
-            chatMessageList(),
-
+             chatMessageList(),
             Container(
               alignment: Alignment.bottomCenter,
-
               width: MediaQuery
                   .of(context)
                   .size
