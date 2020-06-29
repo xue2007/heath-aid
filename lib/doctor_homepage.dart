@@ -43,7 +43,7 @@ class _AllUsersPageState extends State<AllUsersPage> {
         title: Text('Doctor Homepage'),
         centerTitle: true,
       ),
-      body: _buildBody(context),
+      body:  _buildBody(context),
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
@@ -108,6 +108,83 @@ class _AllUsersPageState extends State<AllUsersPage> {
         Flexible(
           flex:2,
           child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children:<Widget>[
+                        CircleAvatar(
+                        backgroundColor: Colors.black,
+                        radius:  50,
+                        child: ClipOval(
+                          child: Image.asset("assets/doctorCartoon.jpg",),
+                        ),
+                      ),
+            ],
+                    ),
+                    SizedBox(
+                      width: 80,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width - 222,
+                      height: 200,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            " Welcome Doctor",
+                            style: TextStyle(fontSize: 32),
+                          ),
+                          SizedBox(height: 20,),
+                         /*Text(
+                            "Heart and kidney Specialist",
+                            style: TextStyle(fontSize: 19, color: Colors.grey),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(Icons.message),
+                                color: Colors.orange,
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      new MaterialPageRoute(
+                                          builder: (BuildContext context) => new ChatRoom()));
+                                },
+                              ),
+                              IconButton(
+                                color: Colors.lightGreenAccent,
+                                icon: Icon(Icons.call),
+                                onPressed: (){
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.video_call),
+                                onPressed: (){
+                                },
+                              ),
+                            ],
+                          )*/
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 20,),
+                    Column(
+
+                    ),
+                  ],
+                ),
+              ],
+            ),
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               color: Colors.blue,
