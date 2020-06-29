@@ -51,7 +51,7 @@ class _AllUsersPageState extends State<AllUsersPage> {
              // accountName: new Text(Constants.myName),
               //accountEmail: new Text('bye'),
               currentAccountPicture: new CircleAvatar(
-                //backgroundImage: NetworkImage('https://images.unsplash.com/photo-1579123480439-dcc379da4707?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80'),
+                backgroundImage: AssetImage('assets/doctorCartoon.jpg'),
                 child: Text('P'),
                 backgroundColor: Colors.greenAccent,
               ),
@@ -85,7 +85,7 @@ class _AllUsersPageState extends State<AllUsersPage> {
             new ListTile(
               title: new Text('Profile'),
               onTap: () {
-                Navigator.of(context).pop();
+                //Navigator.of(context).pop();
                 Navigator.push(
                     context,
                     new MaterialPageRoute(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testing/chatroom.dart';
 
 
 
@@ -11,98 +12,286 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBar(
-        leading:IconButton(
-          icon:Icon(Icons.arrow_left,size: 60.0,),
-          onPressed: () {
-            Navigator.pop(context);
-          }
+      appBar: AppBar(
+       // backgroundColor: Colors.transparent,
+        title: Text('Profile'),
+        elevation: 0.0,
+        brightness: Brightness.light,
+        iconTheme: IconThemeData(
+            color: Colors.black
         ),
-        title:Text('Edit Profile'),
       ),
-      body: Builder(
-        builder: (context) => Container(
-          child:Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height:20.0,),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Align(
-                    alignment: Alignment.center,
-                    child:CircleAvatar(
-                      radius:100.0,
-                      backgroundColor: Colors.blue,
-                      child: ClipOval(
-                        child: SizedBox(
-                          width:180.0,
-                          height:180.0,
-                          child:Image.network('https://images.unsplash.com/photo-1494548162494-384bba4ab999?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80',
-                          fit:BoxFit.fill,
-                          ),
-                        ),
-                      )
+                  CircleAvatar(
+                    backgroundColor: Colors.black,
+                    radius:  50,
+                    child: ClipOval(
+                      child: Image.asset("assets/doctorCartoon.jpg",),
                     ),
                   ),
-                  Padding(
-                    padding:EdgeInsets.only(top:60.0),
-                    child:IconButton(
-                      icon:Icon(
-                        Icons.camera,
-                        size:60.0,
-                      ),
-                      onPressed: () {
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 222,
+                    height: 220,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "Dr. Brains",
+                          style: TextStyle(fontSize: 32),
+                        ),
+                        Text(
+                          "Heart and kidney Specialist",
+                          style: TextStyle(fontSize: 19, color: Colors.grey),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(Icons.message),
+                              color: Colors.orange,
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (BuildContext context) => new ChatRoom()));
+                              },
 
-                      },
+                            ),
+                            IconButton(
+                              color: Colors.lightGreenAccent,
+                              icon: Icon(Icons.call),
+                              onPressed: (){
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.video_call),
+                              onPressed: (){
+                              },
+                            ),
+                          ],
+                        )
+                      ],
                     ),
-                  )
+                  ),
                 ],
               ),
               SizedBox(
-                height:20.0,
+                height: 26,
+              ),
+              Text(
+                "About",
+                style: TextStyle(fontSize: 22),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Text(
+                "Dr. Brains is a cardiologist in Singapore & affiliated with multiple hospitals in the  area."
+                    "He received his medical degree from Yoo Lin School of Medicine and has been in practice for more than 20 years. ",
+                style: TextStyle(color: Colors.grey, fontSize: 16),
+              ),
+              SizedBox(
+                height: 24,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      child: Column(
-                        children: <Widget>[
-                          Align(alignment:Alignment.centerLeft,
-                          child:Text('Name',
-                            style:TextStyle(
-                              color: Colors.blueGrey,fontSize: 18.0),
+                  Expanded(
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Icon(Icons.location_on),
+                            SizedBox(
+                              width: 10,
                             ),
-                          ),
-                      Align(alignment: Alignment.centerLeft,
-                        child:Text('bob',
-                        style: TextStyle(
-                          color:Colors.black,
-                            fontSize:20.0,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Address",
+                                  style: TextStyle(
+                                      color: Colors.black87.withOpacity(0.7),
+                                      fontSize: 20),
+                                ),
+                                SizedBox(
+                                  height: 3,
+                                ),
+                                Container(
+                                    width: MediaQuery.of(context).size.width - 268,
+                                    child: Text(
+                                      "Kent Ridge road,Singapore ",
+                                      style: TextStyle(color: Colors.grey),
+                                    ))
+                              ],
+                            )
+                          ],
                         ),
+                        SizedBox(
+                          height: 10,
                         ),
+                        Row(
+                          children: <Widget>[
+                            Icon(Icons.access_time),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Consultations",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: Colors.black87.withOpacity(0.7),
+                                      fontSize: 20),
+                                ),
+                                SizedBox(
+                                  height: 3,
+                                ),
+                                Container(
+                                    width: MediaQuery.of(context).size.width - 268,
+                                    child: Text(
+                                      'Monday - Friday Open till 7 Pm',
+                                      style: TextStyle(color: Colors.grey),
+                                    ))
+                              ],
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Icon(Icons.book),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Expertise",
+                                  style: TextStyle(
+                                      color: Colors.black87.withOpacity(0.7),
+                                      fontSize: 25),
+                                ),
+                                SizedBox(
+                                  height: 3,
+                                ),
+                                Container(
+                                    width: MediaQuery.of(context).size.width - 268,
+                                    child: Text(
+                                      "6 years in cardiology,   6 years in urology and 5 year in general practise",
+                                      style: TextStyle(color: Colors.grey),
+                                    ))
+                              ],
+                            )
+                          ],
+                        ),
+
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Text(
+                "Activity",
+                style: TextStyle(
+                    color: Color(0xff242424),
+                    fontSize: 28,
+                    fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 24,horizontal: 16),
+                      decoration: BoxDecoration(
+                          color: Color(0xffFBB97C),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                  color: Color(0xffFCCA9B),
+                                  borderRadius: BorderRadius.circular(15)
+                              ),
+                              child: Icon(Icons.list)),
+                          SizedBox(
+                            width: 15,
                           ),
+                          Container(
+                            width: MediaQuery.of(context).size.width/2 - 130,
+                            child: Text(
+                              "List Of Schedule",
+                              style: TextStyle(color: Colors.white,
+                                  fontSize: 17),
+                            ),
+                          )
                         ],
                       ),
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child:Container(
-                      child: Icon (
-                        Icons.pan_tool,
+                  SizedBox(width: 16,),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 24,horizontal: 16),
+                      decoration: BoxDecoration(
+                          color: Color(0xffA5A5A5),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                  color: Color(0xffBBBBBB),
+                                  borderRadius: BorderRadius.circular(15)
+                              ),
+                              child: Icon(Icons.list)),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width/2 - 130,
+                            child: Text(
+                              "List of Cases",
+                              style: TextStyle(color: Colors.white,
+                                  fontSize: 17),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),
                 ],
-              ),
-                ],
               )
+            ],
           ),
         ),
-      );
+      ),
+    );
   }
 }
-

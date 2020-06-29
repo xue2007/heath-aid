@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
               //accountName: new Text(Constants.myName),
               //accountEmail: new Text('bye'),
               currentAccountPicture: new CircleAvatar(
-                //backgroundImage: NetworkImage('https://images.unsplash.com/photo-1579123480439-dcc379da4707?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80'),
+                backgroundImage: AssetImage('assets/patientCartoon.jpg'),
                 child: Text('hi'),
                 backgroundColor: Colors.greenAccent,
               ),
@@ -288,8 +288,8 @@ class AppointmentCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    "http://pngimg.com/uploads/doctor/doctor_PNG15959.png",
+                  backgroundImage: AssetImage(
+                    'assets/health.jpg',
                   ),
                 ),
                 SizedBox(

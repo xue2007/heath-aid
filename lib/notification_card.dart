@@ -64,10 +64,12 @@ class NotificationCard extends StatelessWidget {
               size: 30,
               color: Colors.green,
             ),
-            Icon(
-              Icons.cancel,
-              size: 30,
-              color: Colors.red,
+            IconButton(
+              icon:Icon(Icons.add),
+              iconSize: 30,
+              color: Colors.orange,
+              onPressed: (){
+              },
             ),
           ],
         ),
