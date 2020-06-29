@@ -109,8 +109,8 @@ class _RootPageState extends State<RootPage> {
 
     Widget _buildWaitingScreen() {
       return Scaffold(
+        resizeToAvoidBottomPadding: false,
         body: Container(
-
           alignment: Alignment.center,
           child: Column(
             children: <Widget>[

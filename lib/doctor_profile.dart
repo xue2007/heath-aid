@@ -28,6 +28,7 @@ class _ProfileState extends State<Profile> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
+
                 children: <Widget>[
                   CircleAvatar(
                     backgroundColor: Colors.black,
@@ -243,7 +244,7 @@ class _ProfileState extends State<Profile> {
                             width: 15,
                           ),
                           Container(
-                            width: MediaQuery.of(context).size.width/2 - 130,
+                            //width: MediaQuery.of(context).size.width/2 - 130,
                             child: Text(
                               "List Of Schedule",
                               style: TextStyle(color: Colors.white,
@@ -275,7 +276,7 @@ class _ProfileState extends State<Profile> {
                             width: 15,
                           ),
                           Container(
-                            width: MediaQuery.of(context).size.width/2 - 130,
+                            //width: MediaQuery.of(context).size.width/ 130,
                             child: Text(
                               "List of Cases",
                               style: TextStyle(color: Colors.white,

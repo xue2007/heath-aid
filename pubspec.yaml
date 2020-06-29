@@ -21,8 +21,11 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+
   flutter:
     sdk: flutter
+  adobe_xd: ^0.1.4
+  flutter_launcher_icons: ^0.7.5
   firebase_auth: ^0.16.0
   cloud_firestore: 0.13.6
   firebase_storage: 3.1.6

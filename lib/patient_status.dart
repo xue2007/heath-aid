@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testing/patient_profile.dart';
 
 class PatientPage extends StatefulWidget {
   @override
@@ -102,13 +103,20 @@ class PatientInformationState extends State<PatientInformation> {
     return ListView.builder(
       itemCount: names.length,
       itemBuilder:(context,index){
-        return ListTile(
-          leading: CircleAvatar(
-            child:Text('hi'),
+        return GestureDetector(
+          onTap:(){ Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (BuildContext context) => new PatientProfile()));
+          },
+          child: ListTile(
+            leading: CircleAvatar(
+              child:Text('hi'),
+            ),
+            title: Text(names [index]),
+            subtitle: Text(text[index]),
+            trailing: Text('11:00 AM')
           ),
-          title: Text(names [index]),
-          subtitle: Text(text[index]),
-          trailing: Text('11:00 AM')
         );
   });
 

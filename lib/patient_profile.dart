@@ -28,7 +28,6 @@ class PatientProfile extends StatelessWidget {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children:<Widget>[
@@ -36,7 +35,7 @@ class PatientProfile extends StatelessWidget {
                           backgroundColor: Colors.black,
                           radius:  30,
                           child: ClipOval(
-                            child: Image.asset("assets/doctorCartoon.jpg",),
+                            child: Image.asset("assets/patientCartoon.jpg",),
                           ),
                         ),
                       ],
@@ -46,18 +45,18 @@ class PatientProfile extends StatelessWidget {
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width - 222,
-                      height: 200,
+                      height: 150,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          SizedBox(height: 65,),
+                          SizedBox(height: 40,),
                           Text(
                             " Patient",
                             style: TextStyle(fontSize: 20,color: Colors.white),
 
                           ),
-                          SizedBox(height: 20,),
+                          SizedBox(height: 10,),
                           Row(
                             children: <Widget>[
                               Container(
@@ -104,12 +103,75 @@ class PatientProfile extends StatelessWidget {
                                 ),
                               ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ),
-                    SizedBox(width: 20,),
-                    Column(
+
+                    Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Text(
+                              " Age:",
+                              style: TextStyle(fontSize: 12,color: Colors.white),
+                            ),
+                              Text(
+                                " 68 Yrs",
+                                style: TextStyle(fontSize: 12,color: Colors.white,fontWeight: FontWeight.bold),
+                              ),
+                      ],
+                          ),
+
+                          SizedBox(height: 15,),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                " Weight: ",
+                                style: TextStyle(fontSize: 12,color: Colors.white),
+
+                              ),
+                              Text(
+                                '56KG',
+                                style: TextStyle(fontSize: 12,color: Colors.white,fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 15,),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                " Fat: ",
+                                style: TextStyle(fontSize: 12,color: Colors.white),
+
+                              ),
+                              Text(
+                                '5.8%',
+                                style: TextStyle(fontSize: 12,color: Colors.white,fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 15,),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                " Height: ",
+                                style: TextStyle(fontSize: 12,color: Colors.white),
+
+                              ),
+                              Text(
+                                '175cm',
+                                style: TextStyle(fontSize: 12,color: Colors.white,fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+
+                        ],
+
+                      ),
 
                     ),
                   ],
@@ -127,20 +189,20 @@ class PatientProfile extends StatelessWidget {
           ),
         ),
         Flexible(
-          flex: 3,
+          flex: 4,
           child: Container(
             color: Colors.white,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(10,15,10,10),
               child: ListView(
                 children: <Widget>[
-                  Text(
-                    'My Patients',
+                 /* Text(
+                    'Pulse',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
-                  ),
+                  ),*/
                   SizedBox(height:10),
                   _buildCard(context,child: PatientCard()),
                   SizedBox(height: 10,),
@@ -170,14 +232,14 @@ class PatientProfile extends StatelessWidget {
   }
 
   Widget _buildCard(context,{Widget child}) {
-    return Card(
-      elevation: 2,
+    return Container(
+     /* elevation: 5,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular((10))
         ),
-      ),
+      ),*/
       child: Container(
-        height: 90,
+        height: 200,
         width: MediaQuery.of(context).size.width,
         child: child,
       ),

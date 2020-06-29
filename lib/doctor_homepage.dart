@@ -6,7 +6,7 @@ import 'auth.dart';
 
 import 'package:testing/patient_status.dart';
 import 'auth_provider.dart';
-import 'general_profile.dart';
+import 'doctor_profile.dart';
 import 'chatroom.dart';
 import 'myPatient_card.dart';
 import 'notification_card.dart';
@@ -39,6 +39,7 @@ class _AllUsersPageState extends State<AllUsersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text('Doctor Homepage'),
         centerTitle: true,
