@@ -32,6 +32,7 @@ class LoginPage extends StatefulWidget {
   String _password;
   String _role;
   String _name;
+  String _error;
   FormType _formType = FormType.login;
 
 
@@ -104,6 +105,9 @@ class LoginPage extends StatefulWidget {
       widget.onSignedIn();
 
     } catch(e){
+      setState(() {
+        _error = e.message;
+      });
         print('Error: $e');
     }
   }
@@ -141,6 +145,7 @@ class LoginPage extends StatefulWidget {
         title: new Text('HealthAid Patient Login Page'),
       ),
       body: new Container(
+
         padding: EdgeInsets.all(15.0),
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -158,11 +163,37 @@ class LoginPage extends StatefulWidget {
       )
     );
   }
+  Widget displayAlert() {
+    if(_error != null) {
+      return Container(
+        color: Colors.orange,
+        width:double.infinity,
+        padding: EdgeInsets.all(10),
+        child: Row(
+          children: <Widget>[
+            Icon(Icons.error_outline),
+            SizedBox(width: 10,),
+            Expanded(child: Text(_error),),
+            IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () {
+                setState(() {
+                  _error = null;
+                });
+              },
+            )
+          ],
+        ),
+      );
+    }
+    return SizedBox(height: 0,);
+  }
 
   List<Widget> inputs() {
 
       if(_formType == FormType.login) {
         return [
+          displayAlert(),
         new TextFormField(
           decoration: new InputDecoration(labelText: 'Email'),
           validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
@@ -171,12 +202,13 @@ class LoginPage extends StatefulWidget {
         new TextFormField(
           decoration: new InputDecoration(labelText: 'Password'),
           obscureText: true,
-          validator: (x) => x.isEmpty ? 'Password can\'t be empty' : null,
+          validator: (x) => PasswordValidator.validate(x),
           onSaved: (x) => _password = x,
         ),
     ];
       } else {
         return [
+          displayAlert(),
           new TextFormField(
             decoration: new InputDecoration(labelText: 'Email'),
             validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
@@ -185,7 +217,7 @@ class LoginPage extends StatefulWidget {
           new TextFormField(
             decoration: new InputDecoration(labelText: 'Password'),
             obscureText: true,
-            validator: (x) => x.isEmpty ? 'Password can\'t be empty' : null,
+            validator: (x) => PasswordValidator.validate(x),
             onSaved: (x) => _password = x,
           ),
         new TextFormField(
@@ -287,5 +319,19 @@ class LoginPage extends StatefulWidget {
         )
       ];
     }
+  }
+}
+
+
+class PasswordValidator{
+  static String validate(String value) {
+    if(value.isEmpty){
+      return  "Password can't be empty";
+    } 
+    if(value.length < 6){
+      return "Password must be at least 6 characters long";
+    }
+      return null;
+    
   }
 }

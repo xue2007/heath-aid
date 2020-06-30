@@ -32,6 +32,7 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
   String _password;
   String _role;
   String _name;
+  String _error;
   FormType _formType = FormType.login;
 
 
@@ -104,9 +105,37 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
         widget.onSignedIn();
 
       } catch(e){
+        setState(() {
+          _error = e.message;
+        });
         print('Error: $e');
       }
     }
+  }
+  Widget displayAlert() {
+    if(_error != null) {
+      return Container(
+        color: Colors.orange,
+        width:double.infinity,
+        padding: EdgeInsets.all(10),
+        child: Row(
+          children: <Widget>[
+            Icon(Icons.error_outline),
+            SizedBox(width: 10,),
+            Expanded(child: Text(_error),),
+            IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () {
+                setState(() {
+                  _error = null;
+                });
+              },
+            )
+          ],
+        ),
+      );
+    }
+    return SizedBox(height: 0,);
   }
   void moveToRegister() {
     ky.currentState.reset();
@@ -163,6 +192,7 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
 
     if(_formType == FormType.login) {
       return [
+        displayAlert(),
         new TextFormField(
           decoration: new InputDecoration(labelText: 'Email'),
           validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
@@ -171,12 +201,13 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
         new TextFormField(
           decoration: new InputDecoration(labelText: 'Password'),
           obscureText: true,
-          validator: (x) => x.isEmpty ? 'Password can\'t be empty' : null,
+          validator: (x) => PasswordValidator.validate(x),
           onSaved: (x) => _password = x,
         ),
       ];
     } else {
       return [
+        displayAlert(),
         new TextFormField(
           decoration: new InputDecoration(labelText: 'Email'),
           validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
@@ -185,7 +216,7 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
         new TextFormField(
           decoration: new InputDecoration(labelText: 'Password'),
           obscureText: true,
-          validator: (x) => x.isEmpty ? 'Password can\'t be empty' : null,
+          validator: (x) => PasswordValidator.validate(x),
           onSaved: (x) => _password = x,
         ),
         new TextFormField(
@@ -287,5 +318,17 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
         )
       ];
     }
+  }
+}
+class PasswordValidator{
+  static String validate(String value) {
+    if(value.isEmpty){
+      return  "Password can't be empty";
+    }
+    if(value.length < 6){
+      return "Password must be at least 6 characters long";
+    }
+    return null;
+
   }
 }
