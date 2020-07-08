@@ -72,7 +72,7 @@ class _HealthRecordState extends State<HealthRecordPage> {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('health_entries').snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return LinearProgressIndicator();
+        if (!snapshot.hasData) return Text('Loading Data... Please Wait...');
 
         return _buildList(context, snapshot.data.documents);
       },
@@ -90,7 +90,7 @@ class _HealthRecordState extends State<HealthRecordPage> {
     final record = Record.fromSnapshot(data);
 
     return Padding(
-      key: ValueKey(record.date),
+      key: ValueKey(record),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
