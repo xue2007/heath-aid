@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:testing/dataRepository.dart';
 import 'package:testing/home_page.dart';
 import 'package:testing/patient_profile.dart';
 import 'package:testing/root_page.dart';
@@ -8,111 +9,199 @@ import 'package:testing/root_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 //import 'datahandling.dart';
+import 'dataRepository.dart';
+import 'patients.dart';
+import 'entry_model.dart';
 
 class RecordPage extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Patient Health Entries',
-      home: HealthRecordPage(),
-    );
+        title: 'Patient Health Record',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: HomeList());
   }
 }
 
-class HealthRecordPage extends StatefulWidget {
+class HomeList extends StatefulWidget {
   @override
-  _HealthRecordState createState() {
-    return _HealthRecordState();
-  }
+  _HomeListState createState() => _HomeListState();
 }
 
-class Record {
-  final String date;
-  final int bloodPressure;
-  final int bloodSugar;
-  final int heartRate;
-  final DocumentReference reference;
+class _HomeListState extends State<HomeList> {
+  final DataRepository repository = DataRepository();
 
-  Record.fromMap(Map<String, dynamic> map, {this.reference})
-      : assert(map['Date'] != null),
-        assert(map['Blood Pressure'] != null),
-        assert(map['Blood Sugar'] != null),
-        assert(map['Heart Rate'] != null),
-        date = map['Date'],
-        bloodPressure = map['Blood Pressure'],
-        bloodSugar = map['Blood Sugar'],
-        heartRate = map['Heart Rate'];
-
-  Record.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data, reference: snapshot.reference);
-
-  @override
-  String toString() => "Record<$date:$bloodPressure:$bloodSugar:$heartRate>";
-}
-
-class _HealthRecordState extends State<HealthRecordPage> {
   @override
   Widget build(BuildContext context) {
+    return _buildHome(context);
+  }
+
+  Widget _buildHome(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Patient Health Entries'),
-        centerTitle: true,
-        leading: BackButton(onPressed: () {
-          Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (BuildContext context) => new HomePage()));
-        }),
+        title: Text("Patient Health Records"),
       ),
-      body: _buildBody(context),
+      body: StreamBuilder<QuerySnapshot>(
+          stream: repository.getStream(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) return LinearProgressIndicator();
+            return _buildList(context, snapshot.data.documents);
+          }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _addPatient();
+        },
+        tooltip: 'Add Patient',
+        child: Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
-  Widget _buildBody(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('health_entries').snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return Text('Loading Data... Please Wait...');
-
-        return _buildList(context, snapshot.data.documents);
-      },
-    );
+  void _addPatient() {
+    AlertDialogWidget dialogWidget = AlertDialogWidget();
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: const Text("Add Patient"),
+              content: dialogWidget,
+              actions: <Widget>[
+                FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Cancel")),
+                FlatButton(
+                    onPressed: () {
+                      Patient newPatient = Patient(dialogWidget.patientName,
+                          type: dialogWidget.character);
+                      repository.addPatient(newPatient);
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Add")),
+              ]);
+        });
   }
 
-  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
+  Widget _buildList(BuildContext context) {
+    // TODO Add Snapshot list
     return ListView(
       padding: const EdgeInsets.only(top: 20.0),
-      children: snapshot.map((data) => _buildListItem(context, data)).toList(),
+      children: snapshot
+          .map((data) => _buildListItem(context, data))
+          .toList(), // TODO Add _BuildListItem call with snapshot list
     );
   }
 
-  Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
-    final record = Record.fromSnapshot(data);
+  Widget _buildListItem(BuildContext context, DocumentSnapshot snapshot) {
+    // TODO Add Snapshot list
+    final patient = Patient.fromSnapshot(snapshot);
+    if (patient == null) {
+      return Container();
+    }
+    return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: InkWell(
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                  child: Text(patient.name == null ? "" : patient.name,
+                      style: BoldStyle)), // TODO add pet name
+              _getPatientIcon("patient") // TODO Add pet type
+            ],
+          ),
+          onTap: () {
+            _navigate(BuildContext context) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PatientDetails(), // TODO add pet
+                  ));
+            }
 
-    return Padding(
-      key: ValueKey(record),
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        child: DataTable(
-          columns: [
-            DataColumn(label: Text('Date')),
-            DataColumn(label: Text('Blood Pressure')),
-            DataColumn(label: Text('Blood Sugar')),
-            DataColumn(label: Text('Heart Rate')),
-          ],
-          rows: [
-            DataRow(cells: [
-              DataCell(Text(record.date)),
-              DataCell(Text(record.bloodPressure.toString())),
-              DataCell(Text(record.bloodSugar.toString())),
-              DataCell(Text(record.heartRate.toString()))
-            ])
-          ],
-        ),
+            _navigate(context);
+          },
+          highlightColor: Colors.green,
+          splashColor: Colors.blue,
+        ));
+  }
+
+  Widget _getPatientIcon(String type) {
+    Widget patientIcon;
+    if (type == "a") {
+      patientIcon = IconButton(
+        icon: Icon(Patient.head), //Come back for assets
+        onPressed: () {},
+      );
+    } else if (type == "b") {
+      patientIcon = IconButton(
+        icon: Icon(Patients.normal),
+        onPressed: () {},
+      );
+    } else {
+      patientIcon = IconButton(
+        icon: Icon(Icons.accessibility),
+        onPressed: () {},
+      );
+    }
+    return patientIcon;
+  }
+}
+
+class AlertDialogWidget extends StatefulWidget {
+  String patientName;
+  String character = '';
+
+  @override
+  _AlertDialogWidgetState createState() => _AlertDialogWidgetState();
+}
+
+class _AlertDialogWidgetState extends State<AlertDialogWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: ListBody(
+        children: <Widget>[
+          TextField(
+            autofocus: true,
+            decoration: InputDecoration(
+                border: OutlineInputBorder(), hintText: "Enter a Patient Name"),
+            onChanged: (text) => widget.patientName = text,
+          ),
+          RadioListTile(
+            title: Text("type a"),
+            value: "value a",
+            groupValue: widget.character,
+            onChanged: (String value) {
+              setState(() {
+                widget.character = value;
+              });
+            },
+          ),
+          RadioListTile(
+            title: Text("type b"),
+            value: "value b",
+            groupValue: widget.character,
+            onChanged: (String value) {
+              setState(() {
+                widget.character = value;
+              });
+            },
+          ),
+          RadioListTile(
+            title: Text("Other"),
+            value: "other",
+            groupValue: widget.character,
+            onChanged: (String value) {
+              setState(() {
+                widget.character = value;
+              });
+            },
+          )
+        ],
       ),
     );
   }
