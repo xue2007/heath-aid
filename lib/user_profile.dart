@@ -109,7 +109,8 @@ class _HomeListState extends State<HomeList> {
             children: <Widget>[
               Expanded(
                   child: Text(patient.name == null ? "" : patient.name,
-                      style: BoldStyle)), // TODO add pet name
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold))), // TODO add pet name
               _getPatientIcon("patient") // TODO Add pet type
             ],
           ),
@@ -133,12 +134,12 @@ class _HomeListState extends State<HomeList> {
     Widget patientIcon;
     if (type == "a") {
       patientIcon = IconButton(
-        icon: Icon(Patient.head), //Come back for assets
+        icon: Icon(Icons.accessibility), //Come back for assets
         onPressed: () {},
       );
     } else if (type == "b") {
       patientIcon = IconButton(
-        icon: Icon(Patients.normal),
+        icon: Icon(Icons.accessibility),
         onPressed: () {},
       );
     } else {
