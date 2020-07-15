@@ -12,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dataRepository.dart';
 import 'patients.dart';
 import 'entry_model.dart';
+import 'PatientDetails.dart';
 
 class RecordPage extends StatelessWidget {
   // This widget is the root of your application.
@@ -119,7 +120,8 @@ class _HomeListState extends State<HomeList> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => PatientDetails(), // TODO add pet
+                    builder: (context) =>
+                        PatientDetails(patient), // TODO add pet
                   ));
             }
 

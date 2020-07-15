@@ -1,29 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:testing/Constants.dart';
+import 'package:testing/auth_constants.dart';
 import 'package:testing/database.dart';
 import 'auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'auth_provider.dart';
-import'helper.dart';
+import 'helper.dart';
 import 'database.dart';
 
 class LoginPageDoctor extends StatefulWidget {
-  LoginPageDoctor({this.auth, this.onSignedIn,this.backToMain});
+  LoginPageDoctor({this.auth, this.onSignedIn, this.backToMain});
 
   final BaseAuth auth;
   final VoidCallback onSignedIn;
   final VoidCallback backToMain;
 
-
-
   @override
   State<StatefulWidget> createState() => new _LoginPageDoctorState();
 }
-enum FormType {
-  login,
-  register
-}
+
+enum FormType { login, register }
 
 class _LoginPageDoctorState extends State<LoginPageDoctor> {
   DataBase databaseMethods = new DataBase();
@@ -34,7 +30,6 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
   String _name;
   String _error;
   FormType _formType = FormType.login;
-
 
   void checkDoctor() {
     FirebaseAuth.instance.currentUser().then((user) {
@@ -59,24 +54,23 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
 
   bool validateAndSave() {
     final form = ky.currentState;
-    if(form.validate()){
+    if (form.validate()) {
       form.save();
       return true;
     }
     return false;
-
   }
 
   void validateAndSubmit() async {
-    if(validateAndSave()) {
+    if (validateAndSave()) {
       try {
         final BaseAuth auth = AuthProvider.of(context).auth;
-        if(_formType == FormType.login) {
-
-          String userId = await auth.signInWithEmailAndPassWord(_email, _password);
+        if (_formType == FormType.login) {
+          String userId =
+              await auth.signInWithEmailAndPassWord(_email, _password);
           checkDoctor();
           QuerySnapshot userInfoSnapshot =
-          await databaseMethods.getUserInfo(_email);
+              await databaseMethods.getUserInfo(_email);
           HelperFunctions.saveUserLoggedInSharedPreference(true);
           HelperFunctions.saveUserNameSharedPreference(
               userInfoSnapshot.documents[0].data["name"]);
@@ -85,7 +79,6 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
           HelperFunctions.saveUserRoleSharedPreference(
               userInfoSnapshot.documents[0].data["role"]);
           print('Signed in: ${userId}');
-
         } else {
           /* Map<String,String> userDataMap = {
           "name" : _name,
@@ -96,15 +89,15 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
           HelperFunctions.saveUserLoggedInSharedPreference(true);
           HelperFunctions.saveUserNameSharedPreference(_name);
           HelperFunctions.saveUserEmailSharedPreference(_email);
-          String user = await auth.createUserWithEmailAndPassWord(_email, _password);
-          Firestore.instance.collection('users').document(user).setData({'email': _email,'uid': user,'role': _role, 'name':_name});
+          String user =
+              await auth.createUserWithEmailAndPassWord(_email, _password);
+          Firestore.instance.collection('users').document(user).setData(
+              {'email': _email, 'uid': user, 'role': _role, 'name': _name});
           checkDoctor();
           print('Registered user: ${user}');
-
         }
         widget.onSignedIn();
-
-      } catch(e){
+      } catch (e) {
         setState(() {
           _error = e.message;
         });
@@ -112,17 +105,22 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
       }
     }
   }
+
   Widget displayAlert() {
-    if(_error != null) {
+    if (_error != null) {
       return Container(
         color: Colors.orange,
-        width:double.infinity,
+        width: double.infinity,
         padding: EdgeInsets.all(10),
         child: Row(
           children: <Widget>[
             Icon(Icons.error_outline),
-            SizedBox(width: 10,),
-            Expanded(child: Text(_error),),
+            SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: Text(_error),
+            ),
             IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
@@ -135,8 +133,11 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
         ),
       );
     }
-    return SizedBox(height: 0,);
+    return SizedBox(
+      height: 0,
+    );
   }
+
   void moveToRegister() {
     ky.currentState.reset();
     setState(() {
@@ -150,47 +151,41 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
       _formType = FormType.login;
     });
   }
+
   bool _checkedValue = false;
   bool _checkedValue1 = false;
   void _doSomething1(bool item) => setState(() => _checkedValue1 = item);
   void _doSomething(bool isChecked) {
-    setState((){
+    setState(() {
       _checkedValue = isChecked;
     });
   }
+
   Widget build(BuildContext context) {
     return new Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: new AppBar(
-          leading:BackButton(
-              onPressed: () {
-                widget.backToMain();
-              }
-          ),
+          leading: BackButton(onPressed: () {
+            widget.backToMain();
+          }),
           title: new Text("HealthAid Doctor's Login Page"),
         ),
         body: new Container(
             padding: EdgeInsets.all(15.0),
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/cool1.jpg'),
-                    fit: BoxFit.cover
-                )
-            ),
+                    image: AssetImage('assets/cool1.jpg'), fit: BoxFit.cover)),
             child: new Form(
               key: ky,
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: inputs() + submitButtons(),
               ),
-            )
-        )
-    );
+            )));
   }
 
   List<Widget> inputs() {
-
-    if(_formType == FormType.login) {
+    if (_formType == FormType.login) {
       return [
         displayAlert(),
         new TextFormField(
@@ -220,18 +215,17 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
           onSaved: (x) => _password = x,
         ),
         new TextFormField(
-          decoration: new InputDecoration(labelText:'Name'),
+          decoration: new InputDecoration(labelText: 'Name'),
           obscureText: true,
           validator: (x) => x.isEmpty ? 'Name can\'t be empty' : null,
           onSaved: (x) => _name = x,
         ),
       ];
     }
-
   }
 
   List<Widget> submitButtons() {
-    if(_formType == FormType.login) {
+    if (_formType == FormType.login) {
       return [
         Center(
           child: Column(
@@ -252,9 +246,9 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
                       ],
                     ),
                   ),
-                  padding: const EdgeInsets.only(left:160,right:160,top: 8,bottom: 8),
-                  child:
-                  const Text('Login', style: TextStyle(fontSize: 20)),
+                  padding: const EdgeInsets.only(
+                      left: 160, right: 160, top: 8, bottom: 8),
+                  child: const Text('Login', style: TextStyle(fontSize: 20)),
                 ),
               ),
               const SizedBox(height: 5),
@@ -272,9 +266,10 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
                       ],
                     ),
                   ),
-                  padding: const EdgeInsets.only(left:103,right:103,top: 10,bottom: 10),
-                  child:
-                  const Text('Create an Account', style: TextStyle(fontSize: 20)),
+                  padding: const EdgeInsets.only(
+                      left: 103, right: 103, top: 10, bottom: 10),
+                  child: const Text('Create an Account',
+                      style: TextStyle(fontSize: 20)),
                 ),
               ),
             ],
@@ -288,9 +283,9 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
           title: new Text('doctor'),
           value: _checkedValue,
           controlAffinity: ListTileControlAffinity.leading,
-          onChanged:(newValue) {
+          onChanged: (newValue) {
             _doSomething(newValue);
-            if(newValue){
+            if (newValue) {
               _role = 'doctor';
             }
           },
@@ -299,36 +294,36 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
           title: new Text('patient'),
           value: _checkedValue1,
           controlAffinity: ListTileControlAffinity.leading,
-          onChanged:(newValue) {
+          onChanged: (newValue) {
             _doSomething1(newValue);
-            if(newValue) {
+            if (newValue) {
               _role = 'patient';
             }
           },
         ),
-
         new RaisedButton(
-          child: new Text('Create an Account', style: new TextStyle(fontSize: 20)),
+          child:
+              new Text('Create an Account', style: new TextStyle(fontSize: 20)),
           onPressed: validateAndSubmit,
         ),
         new RaisedButton(
-          child: new Text(
-              'Have an Account?', style: new TextStyle(fontSize: 20)),
+          child:
+              new Text('Have an Account?', style: new TextStyle(fontSize: 20)),
           onPressed: moveToLogin,
         )
       ];
     }
   }
 }
-class PasswordValidator{
+
+class PasswordValidator {
   static String validate(String value) {
-    if(value.isEmpty){
-      return  "Password can't be empty";
+    if (value.isEmpty) {
+      return "Password can't be empty";
     }
-    if(value.length < 6){
+    if (value.length < 6) {
       return "Password must be at least 6 characters long";
     }
     return null;
-
   }
 }

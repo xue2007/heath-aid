@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:testing/Constants.dart';
+import 'package:testing/auth_constants.dart';
 import 'auth.dart';
 
 import 'package:testing/patient_status.dart';
@@ -10,7 +10,6 @@ import 'doctor_profile.dart';
 import 'chatroom.dart';
 import 'myPatient_card.dart';
 import 'notification_card.dart';
-
 
 class AllUsersPage extends StatefulWidget {
   AllUsersPage({this.auth, this.onSignedOut});
@@ -23,15 +22,15 @@ class AllUsersPage extends StatefulWidget {
 
 class _AllUsersPageState extends State<AllUsersPage> {
   static DateTime currentTime = new DateTime.now();
-  String formattedDate = DateFormat('kk:mm:ss \n EEE d MMM').format(currentTime);
+  String formattedDate =
+      DateFormat('kk:mm:ss \n EEE d MMM').format(currentTime);
 
-  void _signOut() async{
+  void _signOut() async {
     try {
       final BaseAuth auth = AuthProvider.of(context).auth;
       await auth.signOut();
       widget.onSignedOut();
-
-    } catch(e) {
+    } catch (e) {
       print(e);
     }
   }
@@ -44,12 +43,12 @@ class _AllUsersPageState extends State<AllUsersPage> {
         title: Text('Doctor Homepage'),
         centerTitle: true,
       ),
-      body:  _buildBody(context),
+      body: _buildBody(context),
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
             new UserAccountsDrawerHeader(
-             // accountName: new Text(Constants.myName),
+              // accountName: new Text(Constants.myName),
               //accountEmail: new Text('bye'),
               currentAccountPicture: new CircleAvatar(
                 backgroundImage: AssetImage('assets/doctorCartoon.jpg'),
@@ -102,12 +101,13 @@ class _AllUsersPageState extends State<AllUsersPage> {
       ),
     );
   }
-  Widget _buildBody(BuildContext context ){
+
+  Widget _buildBody(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Flexible(
-          flex:2,
+          flex: 2,
           child: Container(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -115,18 +115,19 @@ class _AllUsersPageState extends State<AllUsersPage> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
-                      children:<Widget>[
+                      children: <Widget>[
                         CircleAvatar(
-                        backgroundColor: Colors.black,
-                        radius:  50,
-                        child: ClipOval(
-                          child: Image.asset("assets/doctorCartoon.jpg",),
+                          backgroundColor: Colors.black,
+                          radius: 50,
+                          child: ClipOval(
+                            child: Image.asset(
+                              "assets/doctorCartoon.jpg",
+                            ),
+                          ),
                         ),
-                      ),
-            ],
+                      ],
                     ),
                     SizedBox(
                       width: 80,
@@ -142,8 +143,10 @@ class _AllUsersPageState extends State<AllUsersPage> {
                             " Welcome Doctor",
                             style: TextStyle(fontSize: 32),
                           ),
-                          SizedBox(height: 20,),
-                         /*Text(
+                          SizedBox(
+                            height: 20,
+                          ),
+                          /*Text(
                             "Heart and kidney Specialist",
                             style: TextStyle(fontSize: 19, color: Colors.grey),
                           ),
@@ -178,22 +181,20 @@ class _AllUsersPageState extends State<AllUsersPage> {
                         ],
                       ),
                     ),
-                    SizedBox(width: 20,),
-                    Column(
-
+                    SizedBox(
+                      width: 20,
                     ),
+                    Column(),
                   ],
                 ),
               ],
             ),
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(40),
-                bottomLeft: Radius.circular(40)
-              )
-            ),
+                color: Colors.blue,
+                borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(40),
+                    bottomLeft: Radius.circular(40))),
           ),
         ),
         Flexible(
@@ -201,7 +202,7 @@ class _AllUsersPageState extends State<AllUsersPage> {
           child: Container(
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(10,15,10,10),
+              padding: const EdgeInsets.fromLTRB(10, 15, 10, 10),
               child: ListView(
                 children: <Widget>[
                   Text(
@@ -211,9 +212,11 @@ class _AllUsersPageState extends State<AllUsersPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height:10),
-                  _buildCard(context,child: PatientCard()),
-                  SizedBox(height: 10,),
+                  SizedBox(height: 10),
+                  _buildCard(context, child: PatientCard()),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     'Medication Reminders',
                     style: TextStyle(
@@ -221,14 +224,15 @@ class _AllUsersPageState extends State<AllUsersPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   _buildCard(context,
-                    child: NotificationCard(
-                      name: 'Patient1',
-                      illness: 'Diabetes',
-                      time: formattedDate,
-                    )
-                  )
+                      child: NotificationCard(
+                        name: 'Patient1',
+                        illness: 'Diabetes',
+                        time: formattedDate,
+                      ))
                 ],
               ),
             ),
@@ -236,15 +240,13 @@ class _AllUsersPageState extends State<AllUsersPage> {
         )
       ],
     );
-
   }
 
-  Widget _buildCard(context,{Widget child}) {
+  Widget _buildCard(context, {Widget child}) {
     return Card(
       elevation: 2,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular((10))
-        ),
+        borderRadius: BorderRadius.all(Radius.circular((10))),
       ),
       child: Container(
         height: 90,
@@ -252,6 +254,5 @@ class _AllUsersPageState extends State<AllUsersPage> {
         child: child,
       ),
     );
-
   }
 }

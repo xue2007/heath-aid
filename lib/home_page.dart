@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:testing/Constants.dart';
+import 'package:testing/auth_constants.dart';
 
 import 'package:testing/chatroom.dart';
 import 'package:testing/data_upload_page.dart';
@@ -10,7 +10,9 @@ import 'package:testing/login_page.dart';
 import 'package:testing/user_profile.dart';
 import 'auth.dart';
 import 'auth_provider.dart';
+
 var globalContext;
+
 class HomePage extends StatefulWidget {
   HomePage({this.auth, this.onSignedOut});
   final BaseAuth auth;
@@ -22,13 +24,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   static DateTime currentTime = new DateTime.now();
-  String formattedDate = DateFormat('kk:mm:ss \n EEE d MMM').format(currentTime);
+  String formattedDate =
+      DateFormat('kk:mm:ss \n EEE d MMM').format(currentTime);
   void _signOut() async {
     try {
       final BaseAuth auth = AuthProvider.of(context).auth;
       await auth.signOut();
       widget.onSignedOut();
-
     } catch (e) {
       print(e);
     }
@@ -87,39 +89,41 @@ class _HomePageState extends State<HomePage> {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color:Colors.grey,
+                  color: Colors.grey,
                 ),
               ),
               color: Colors.orange,
             ),
-            padding: EdgeInsets.only(left:20,bottom :20),
+            padding: EdgeInsets.only(left: 20, bottom: 20),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('Welcome',
-                  style:TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold
-                  ) ,
+                Text(
+                  'Welcome',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(width: 120,),
+                SizedBox(
+                  width: 120,
+                ),
                 //SizedBox(width: 50,),
                 RaisedButton.icon(
                   label: Text('upload Health Data'),
-                    icon: Icon(Icons.add),
+                  icon: Icon(Icons.add),
                   color: Colors.white,
-                  onPressed: (){
+                  onPressed: () {
                     Navigator.push(
                         context,
                         new MaterialPageRoute(
-                            builder: (BuildContext context) => new HealthForm()));
+                            builder: (BuildContext context) =>
+                                new HealthForm()));
                   },
                 )
               ],
             ),
           ),
-
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           Expanded(
             child: Container(
               padding: EdgeInsets.all(10),
@@ -129,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   Text('Doctor Appointments'),
                   Container(
-                    height:200,
+                    height: 200,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: <Widget>[
@@ -138,81 +142,85 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
-                  SizedBox(height:10),
+                  SizedBox(height: 10),
                   Text('My Medication'),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     children: <Widget>[
                       Expanded(
-                          child: MedicineContainer(
-                            active: true,
-                            time: 'Morning',
-                          ),
+                        child: MedicineContainer(
+                          active: true,
+                          time: 'Morning',
+                        ),
                       ),
-                      SizedBox(width:10),
+                      SizedBox(width: 10),
                       Expanded(
                         child: MedicineContainer(
                           active: false,
                           time: 'Afternoon',
                         ),
                       ),
-            ],
-          ),
-                      SizedBox(height: 5,),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: MedicineContainer(
-                              active: false,
-                              time: 'Evening',
-                            ),
-                          ),
-                          SizedBox(width: 10,),
-                          Expanded(
-                            child: MedicineContainer(
-                              active: false,
-                              time: 'Night',
-                            ),
-                          ),
-                        ],
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: MedicineContainer(
+                          active: false,
+                          time: 'Evening',
+                        ),
                       ),
-                      SizedBox(height:5),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: MedicineContainer(
+                          active: false,
+                          time: 'Night',
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
                   Text('Recent'),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Expanded(
                     child: ListView(
                       //scrollDirection: Axis.vertical,
                       children: <Widget>[
                         MessagesCard(
                           color: Colors.blue,
-                          icon:Icon(
+                          icon: Icon(
                             Icons.calendar_today,
                             color: Colors.white,
                           ),
                         ),
                         MessagesCard(
                           color: Colors.blue,
-                          icon:Icon(
+                          icon: Icon(
                             Icons.calendar_today,
                             color: Colors.white,
                           ),
                         ),
                       ],
-                      ),
                     ),
-                  ],
-    ),
-    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
-
     );
-
   }
 }
-
-
 
 class MedicineContainer extends StatelessWidget {
   final String time;
@@ -255,9 +263,9 @@ class MedicineContainer extends StatelessWidget {
                 active
                     ? Container()
                     : Icon(
-                  Icons.block,
-                  color: Colors.blue,
-                ),
+                        Icons.block,
+                        color: Colors.blue,
+                      ),
               ],
             ),
           ],
@@ -266,6 +274,7 @@ class MedicineContainer extends StatelessWidget {
     );
   }
 }
+
 class AppointmentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -334,6 +343,7 @@ class AppointmentCard extends StatelessWidget {
     );
   }
 }
+
 class MessagesCard extends StatelessWidget {
   final Color color;
   final Icon icon;
@@ -341,10 +351,10 @@ class MessagesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [BoxShadow(color: Colors.grey[300], blurRadius: 3.0, offset: Offset(0,1))]
-      ),
+      decoration: BoxDecoration(color: Colors.white, boxShadow: [
+        BoxShadow(
+            color: Colors.grey[300], blurRadius: 3.0, offset: Offset(0, 1))
+      ]),
       margin: EdgeInsets.symmetric(vertical: 11.0, horizontal: 5.0),
       padding: EdgeInsets.all(11.0),
       child: Row(
