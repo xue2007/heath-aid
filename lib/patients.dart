@@ -8,12 +8,15 @@ class Patient {
   String name;
   int age;
   String address;
+  String type;
+  String notes;
   //This links to the patient's health record
   List<Entry> entries = List<Entry>();
   //Creating a document reference
   DocumentReference reference;
   //Constructor (name is compulsory), the rest are optional
-  Patient(this.name, {this.age, this.address, this.entries});
+  Patient(this.name,
+      {this.age, this.address, this.entries, this.type, this.notes});
   //factory constructor to create Patient from a Firestore DocumentSnapshot
   factory Patient.fromSnapshot(DocumentSnapshot snapshot) {
     Patient newPatient = Patient.fromJson(snapshot.data);
@@ -33,6 +36,8 @@ Patient _PatientFromJson(Map<String, dynamic> json) {
   return Patient(json['Name'] as String,
       age: json['Age'] as int,
       address: json['Address'] as String,
+      type: json["Type"] as String,
+      notes: json["Notes"] as String,
       entries: _convertEntries(json['health-entries'] as List));
 }
 
@@ -53,6 +58,8 @@ Map<String, dynamic> _PatientToJson(Patient instance) => <String, dynamic>{
       'Name': instance.name,
       'age': instance.age,
       'Address': instance.address,
+      'Type': instance.type,
+      'Notes': instance.notes,
       'health-entries': _EntryList(instance.entries),
     };
 //Convert a list of entries into a list of mapped key/value pair

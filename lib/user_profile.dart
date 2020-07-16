@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'PatientDetails.dart';
+import 'patients_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,12 +17,14 @@ import 'patients.dart';
 import 'entry_model.dart';
 import 'PatientDetails.dart';
 
+const BoldStyle = TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold);
+
 class RecordPage extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Patient Health Record',
+        title: 'Patient Health Entries',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
@@ -43,14 +48,14 @@ class _HomeListState extends State<HomeList> {
   Widget _buildHome(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Patient Health Records"),
+        title: Text("Patients"),
       ),
       body: StreamBuilder<QuerySnapshot>(
           stream: repository.getStream(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) return LinearProgressIndicator();
             return _buildList(context, snapshot.data.documents);
-          }),
+          }), // TODO Add StreamBuilder
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _addPatient();
@@ -80,6 +85,7 @@ class _HomeListState extends State<HomeList> {
                       Patient newPatient = Patient(dialogWidget.patientName,
                           type: dialogWidget.character);
                       repository.addPatient(newPatient);
+                      // TODO Add New Patient to repository
                       Navigator.of(context).pop();
                     },
                     child: Text("Add")),
@@ -99,6 +105,7 @@ class _HomeListState extends State<HomeList> {
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot snapshot) {
     // TODO Add Snapshot list
+    // TODO Get Patient from snapshot
     final patient = Patient.fromSnapshot(snapshot);
     if (patient == null) {
       return Container();
@@ -110,9 +117,8 @@ class _HomeListState extends State<HomeList> {
             children: <Widget>[
               Expanded(
                   child: Text(patient.name == null ? "" : patient.name,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold))), // TODO add pet name
-              _getPatientIcon("patient") // TODO Add pet type
+                      style: BoldStyle)), // TODO add patient name
+              _getPetIcon(patient.type) // TODO Add pet type
             ],
           ),
           onTap: () {
@@ -121,7 +127,7 @@ class _HomeListState extends State<HomeList> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        PatientDetails(patient), // TODO add pet
+                        PatientDetails(patient), // TODO add patient
                   ));
             }
 
@@ -134,14 +140,14 @@ class _HomeListState extends State<HomeList> {
 
   Widget _getPatientIcon(String type) {
     Widget patientIcon;
-    if (type == "a") {
+    if (type == "diabetic") {
       patientIcon = IconButton(
-        icon: Icon(Icons.accessibility), //Come back for assets
+        icon: Icon(Patients.diabetic),
         onPressed: () {},
       );
-    } else if (type == "b") {
+    } else if (type == "hi_bp") {
       patientIcon = IconButton(
-        icon: Icon(Icons.accessibility),
+        icon: Icon(Patients.hi_bp),
         onPressed: () {},
       );
     } else {
@@ -175,8 +181,8 @@ class _AlertDialogWidgetState extends State<AlertDialogWidget> {
             onChanged: (text) => widget.patientName = text,
           ),
           RadioListTile(
-            title: Text("type a"),
-            value: "value a",
+            title: Text("Diabetic"),
+            value: "diabetic",
             groupValue: widget.character,
             onChanged: (String value) {
               setState(() {
@@ -185,8 +191,8 @@ class _AlertDialogWidgetState extends State<AlertDialogWidget> {
             },
           ),
           RadioListTile(
-            title: Text("type b"),
-            value: "value b",
+            title: Text("Hi-BP"),
+            value: "hi-BP",
             groupValue: widget.character,
             onChanged: (String value) {
               setState(() {
