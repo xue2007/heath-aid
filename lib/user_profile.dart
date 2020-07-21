@@ -93,7 +93,7 @@ class _HomeListState extends State<HomeList> {
         });
   }
 
-  Widget _buildList(BuildContext context) {
+  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
     // TODO Add Snapshot list
     return ListView(
       padding: const EdgeInsets.only(top: 20.0),
@@ -118,7 +118,7 @@ class _HomeListState extends State<HomeList> {
               Expanded(
                   child: Text(patient.name == null ? "" : patient.name,
                       style: BoldStyle)), // TODO add patient name
-              _getPetIcon(patient.type) // TODO Add pet type
+              _getPatientIcon(patient.type) // TODO Add pet type
             ],
           ),
           onTap: () {

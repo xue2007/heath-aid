@@ -42,6 +42,7 @@ class PatientDetailForm extends StatefulWidget {
 }
 
 class _PatientDetailFormState extends State<PatientDetailForm> {
+  final DataRepository repository = DataRepository();
   final _formKey = GlobalKey<FormBuilderState>();
   final dateFormat = DateFormat('yyyy-MM-dd');
   String name;
@@ -226,7 +227,7 @@ class _PatientDetailFormState extends State<PatientDetailForm> {
     // TODO Add Patient
     String entry;
     DateTime entryDate;
-    bool done = false;
+    bool verified = false;
     final _formKey = GlobalKey<FormBuilderState>();
     showDialog(
         context: context,
@@ -269,7 +270,7 @@ class _PatientDetailFormState extends State<PatientDetailForm> {
                         label: Text("Verified"),
                         onChanged: (text) {
                           setState(() {
-                            done = text;
+                            verified = text;
                           });
                         },
                       )

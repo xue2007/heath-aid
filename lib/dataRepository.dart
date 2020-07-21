@@ -15,7 +15,7 @@ class DataRepository {
   }
 
   //Add a new patient, this returns a new future if waited
-  Future<DocumentReference> addPatient(Patient, patient) {
+  Future<DocumentReference> addPatient(Patient patient) {
     return collection.add(patient.toJson());
   }
 
