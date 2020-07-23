@@ -1,9 +1,5 @@
-Proposed level of achievement: Apollo 11
-
 Tech Stack:
 
-
-FLutter + Firebase
 
 Health-aid
 Platform solution for Chronic Illness patient care
@@ -39,6 +35,11 @@ Data Visualisation and Trend Analysis
 With a large quantity of data, we are considering allowing our doctors to create visualisations and simple analytics to aid insights to plan future care for their patients. For now we consider using Python’s Matplotlib and Seaborn for visualisation. Development tech stack choices for this aspect may change as we go deeper into the development cycle.
 
 
+App Architecture Design:
+
+
+
+
 Motivation:
 
 With the recent COVID situation affecting everyone, drastically changing the way we work and play. One group of people who are particularly hard hit are chronic illness patients. Due to the current situation, visits to the doctor may be difficult or not possible. These situations can expose chronic illness patients at a higher risk. Hence a communication solution between patients and doctors can alleviate this problem.
@@ -55,10 +56,6 @@ User Stories:
 As a patient with chronic illness, I can update my doctors about some of my health status so that I do not need to make a trip to the clinic/hospital.
 
 As a doctor, I can manage all my patients in a centralised system so that it is more convenient and clearer for my work.
-
-As a caregiver, I can receive updates on my family member and advice so that we will know how to better take care of them
-
-As a first-responder/paramedic, I can access information that is accurate and timely so that I can help the patient in time.
 
 
 Scope of project:
@@ -111,12 +108,28 @@ Initially, when we started this idea, we thought that maybe by the end of orbita
 
 MileStone 2 related Insights and learning points:
 
-We noticed how firebase auth can be tricky to manipulate with asynchronous coding and Future involved as we ran into a few bugs and got stuck with the authentication process. We would try to resolve this by milestone 3 as a Troubleshoot and debug feature.
-We initially wanted users to submit health data entries and let them be reflected on the User’s data board. However we noticed we need to update the respective UI by adding additional rows using flutter-fire. We are still trying to figure that out by milestone 3.
-As an extension, we plan to implement a chatting function. However due to issues to auth currently, we need to sort out the issues with firebase.auth before continuing with our chat function implementation.
+We noticed how firebase auth can be tricky to manipulate with asynchronous coding and Future involved as we ran into a few bugs and got stuck with the authentication process. 
+We initially wanted users to submit health data entries and let them be reflected on the User’s data board. However we noticed the need to update the respective UI by adding additional rows using flutter-fire. We are in the process of fixing the backend and will get it done by milestone 3.
+We plan to implement a chatting function as one of our core functions supplementing the exchange of information between the patients and the doctor.There is a great usage of firebase during implementation where time and user is needed which can be tricky.
 Regarding testing our software, we have already ran into many issues on the software and when accessing the specific data required, we are still trying to resolve some of these problems that are raised such as user authentication and logins, reflecting UI changes with addition of Data entries captured on the User’s end. Once these issues are resolved, we should be able to come up with better methods and ways to test out our software. 
 
-Update: As of 29th Jun 2020, the submission of the milestone, we have been able to resolve the issue of firebase auth by segregating the patients and doctors and making them login into different auth sessions. This allows us to create dedicated auth spaces for the doctors and patients so we no longer have the issue of the”lag” with our login sessions. What we now need to resolve is a myriad of backend issues. From allowing the user to submit their entries and be reflected, to the doctors able to zone in on individual patients. Hopefully by the end of orbital, we are able to smooth out these technical kinks. We are aware that flutter along with Firebase can now create a smooth chatroom between 2 node devices. To this end, we would try to implement the chat as a solution and implement it by Milestone 3.
+Update: As of 29th Jun 2020, the submission of the milestone, we have been able to resolve the issue of firebase auth by segregating the patients and doctors and making them login into different auth sessions. This allows us to create dedicated auth spaces for the doctors and patients so we no longer have the issue of the”lag” with our login sessions. What we now need to resolve is a myriad of backend issues. From allowing the user to submit their entries and be reflected, to the doctors able to zone in on individual patients. Hopefully by the end of orbital, we are able to smooth out these technical kinks. We are aware that flutter along with Firebase can now create a smooth chatroom between 2 node devices and have done it with some small bugs. To this end, we would be integrating the usage of chat function to our backend for the different uploading of information in the other parts of the application.We will  implement it by Milestone 3.
+
+
+MileStone 3 related insights and learning points:
+
+Overview: Milestone 3 is mostly dedicated to the upload function (remote health record system), UI/UX changes, debugging and to resolve various other concerns raised on MileStone 2.
+
+We noticed that the current DataTable model is insufficient to sustain a robust user base and cannot support regular uploads of data to the Firestore system. To address this issue, we created a separate dataRepository.dart file, with dedicated data retrieval and writing methods and the dedicated repository object.
+Of course along the way we face issues with the way our data is structured and that cause us to have to redo a large amount of work done in the initial phase. Specifically, the structure of our NoSQL Database has to be reconfigured in order for our client to display the entries properly.
+At a future phase of this project, we envision that we need to continuously debug the database and provide support for security. Data privacy for health data has been a major concern over many credit and healthcare platforms. Simply using Firebase’ oAuth system is insufficient to provide the security coverage that many users who use Healthcare Platform expect. In fact the security protocol can be an entire issue by itself.
+Other than the entry to database integration, when we conduct user tests across friends, one feedback was that there are UI features that can be pretty confusing. Such as whether to drag horizontally on the patient’s appointment view. Logging in and updating by dragging downwards.
+As the final App requires a reading of an ever-increasing scrolling list of data entries created by users, we are unable to fully implement the full project with the upload feature. However, the app can still serve its purpose of facilitating communication between doctors and patients.
+Towards the end of this project, we start to feel the constraint that a DataBase system such as Firebase can impose. Having a private data residency is difficult on Firebase without having deeply nested map objects for each individual user which is highly discouraged for cloud Firestore. Because this significantly increases the time needed for Cloud Firestore to perform reads. Given that Firestore is optimised for faster reads, this defeats the purpose of using Cloud Firestore. If we could possibly start over, we would consider using database management systems such as MongoDB or even some AWS solutions such as S3 Buckets, DynamoDB or RDS. These are all services that are pay-as-you use and resolve many data residency issues as well.
+Originally we thought we wanted a concept where we would ask the user to fill in separate fields of health-metric data in a separate page and make certain fields optional in order to resolve certain user problems. The funny thing is we noticed a much simpler solution would be just allow users to govern the format that they upload their data. After all, each patient is unique in their own rights. We can provide a suggested format for the users to follow. However, it’s way better for the patients or caregivers to provide what kind of services they want to show.
+This is possibly a source of confusion for many users. We noticed that we may need to remove the button for users to fill in the separate fields. And come back to complete this feature at a later timing. Meanwhile a User Guide or tutorial is probably a better way to illustrate the features and explain how to better use the features on the app. 
+The members consist of a Data Science Student who started from no experience with Java and Dart to someone who’s confidently coming up with features and hot-reloading to debug them. Using asynchronous programming and Future streams with some helps and prompts, but able to understand certain fundamental concepts behind some database reads and writes. And an Information System student who worked tirelessly to debug issues with code bases from UI/UX to firebase auth. The app at the end may not be the prettiest in the whole group, but we certainly learnt a lot in terms of software engineering concepts.
+
 
 
 Good Software engineering practices:
@@ -136,7 +149,7 @@ Login and Auth System:
 
 Input: Entering a registered account	(Patient/Doctor)
 Expected output: Successful login with that profile 
-Observed outcome: We noticed that our Firebase auth has a tendency to “lag” behind 1 account due to an issue with our firebase auth. We plan to resolve this by Milestone 3 where we’ll try to debug the issue that is most likely caused by an issue with the asynchronous portion of the login system.
+Observed outcome: We noticed that our Firebase auth has a tendency to “lag” behind 1 account due to an issue with our firebase auth. We plan to resolve this by Milestone 3 where we’ll try to debug the issue that is most likely caused by an issue with the asynchronous portion of the login system.For now we have a first page where users can select their respective roles, patient or doctor and login to the correct homepage.
 
 Input: Entering an account that has not been registered
 Expected output: The system rejecting entry and prompting the user to register before allowing entry
@@ -144,20 +157,27 @@ Observed Output: The app works well in this respect, if you do not register with
 
 Input: Entering an account but with the wrong password
 Expected output: The system denies entry to the user
-Observed Output: The Firebase Auth system did feedback on the wrong password input and denies entry into the app.
+Observed Output: The Firebase Auth system did feedback on the wrong password input and denied entry into the app.
+
+Input:Entering an empty password/username
+Expected output:The user would be denied entry into the application.
+Observed Output:printing of invalid username/password.
 
 Potential improvement in the future: 
-Consider adding feedback so that the user knows whether they are using the wrong password or just simply using an account that does not exist.
+Consider adding feedback such as an animated popup so that the user knows whether they are using the wrong password or just simply using an account that does not exist.
+
+
 
 Data Entry for the patient:
 
 The Data Entry system for patients is not yet fully connected to a functional backend, we need to continue to work on that before being able to provide good testing for the system.
+For now, Patients can access the entry page through the buttons in the homepage and a form will reveal for them to key in their results.
 
 Chat function for Doctor and patients:
 
 Input: Doctor clicks the chatroom button from the App Drawer
 Expected output: App shows the list of patients that the doctor can check-in with
-Observed Output: The App would show the list of users that the doctor can interact with along with the ability to scroll through the doctor’s choices.
+Observed Output: The App would show the list of users that the doctor has already and can interact with along with the ability to scroll through the doctor’s choices.
 
 Full chat integration is also currently under work, this segment is connected to the database portion for firebase and requires more knowledge in utilising cloud firestore. We plan to continue working on the app and push for the updated project to include a fully functional entry creation along with the chat feature.
 
@@ -183,4 +203,3 @@ Observed Output: Test case fulfilled
 Input: logout when the app drawer is extended.
 Output: Initiates the logout() function and logs the user out from the app
 Observed Output: Brings the user to the login page, test case fulfilled.
-
