@@ -29,12 +29,21 @@ class DataBase {
         .getDocuments();
 
   }
+  Future<void> createDoctorProfile(String id,profileMap){
+    Firestore.instance.collection('Doctor')
+        .document(id).setData(profileMap).catchError((e){
+          print(e.toString());
+    });
+  }
+
+
   Future<bool> createChatRoom(String id,chatRoomMap) {
     Firestore.instance.collection('Chatroom')
         .document(id).setData(chatRoomMap).catchError((e) {
         print(e.toString());
     });
   }
+
   Future<void> addConversationMessages(String roomId, messageMap){
     Firestore.instance.collection('Chatroom')
         .document(roomId)
@@ -48,6 +57,14 @@ class DataBase {
         .orderBy('time',descending: false)
         .snapshots();
   }
+  getDoctorInfo(String id) async {
+    return await Firestore.instance.collection('Doctor')
+        .document(id)
+        .snapshots();
+  }
+
+
+
   getChatRooms(String id) async{
     return await Firestore.instance
         .collection("Chatroom")

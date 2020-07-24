@@ -1,14 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:testing/chatroom.dart';
+import 'EditDoctor.dart';
+import'package:cloud_firestore/cloud_firestore.dart';
+import'auth_constants.dart';
+import 'database.dart';
 
 
 
 class Profile extends StatefulWidget {
+  Profile({this.name, this.about,this.expertise, this.specialisation});
+  String name;
+  String about;
+  String expertise;
+  String specialisation;
+
   @override
   _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+
+  DataBase databaseMethods = new DataBase();
+  Stream<QuerySnapshot> chatMessageStream;
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +36,19 @@ class _ProfileState extends State<Profile> {
         iconTheme: IconThemeData(
             color: Colors.black
         ),
+        actions: <Widget>[
+          IconButton(
+            onPressed: (){
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (BuildContext context) => new EditDoctor()));
+
+            },
+            icon: Icon(Icons.edit),
+          ),
+
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -30,6 +59,7 @@ class _ProfileState extends State<Profile> {
               Row(
 
                 children: <Widget>[
+                  chatMessageList(),
                   CircleAvatar(
                     backgroundColor: Colors.black,
                     radius:  50,
@@ -52,7 +82,8 @@ class _ProfileState extends State<Profile> {
                           style: TextStyle(fontSize: 32),
                         ),
                         Text(
-                          "Heart and kidney Specialist",
+                          widget.specialisation,
+                          //'hi',
                           style: TextStyle(fontSize: 19, color: Colors.grey),
                         ),
                         SizedBox(
@@ -244,7 +275,7 @@ class _ProfileState extends State<Profile> {
                             width: 15,
                           ),
                           Container(
-                            //width: MediaQuery.of(context).size.width/2 - 130,
+                            width: MediaQuery.of(context).size.width/2 - 130,
                             child: Text(
                               "List Of Schedule",
                               style: TextStyle(color: Colors.white,
@@ -276,9 +307,9 @@ class _ProfileState extends State<Profile> {
                             width: 15,
                           ),
                           Container(
-                            //width: MediaQuery.of(context).size.width/ 130,
+                            width: MediaQuery.of(context).size.width/2- 130,
                             child: Text(
-                              "List of Cases",
+                              "List of Patients",
                               style: TextStyle(color: Colors.white,
                                   fontSize: 17),
                             ),
@@ -294,5 +325,37 @@ class _ProfileState extends State<Profile> {
         ),
       ),
     );
+  }
+  Widget chatMessageList() {
+    return StreamBuilder(
+      stream: chatMessageStream,
+      builder: (context, snapshot) {
+        return  SafeArea(
+          child: ListView.builder(
+              itemCount: snapshot.data.documents.length,
+              itemBuilder: (context, index) {
+                return Profile(
+                    name:
+                    snapshot.data.documents[index].data['name'],
+                    about:
+                    snapshot.data.documents[index].data['about'],
+                    expertise:
+                    snapshot.data.documents[index].data['expertise'],
+                    specialisation:
+                    snapshot.data.documents[index].data['specialisation']
+
+                );}),
+        );
+      },
+    );
+  }
+  @override
+  void initState() {
+    databaseMethods.getDoctorInfo('a').then((value) {
+      setState(() {
+        chatMessageStream = value;
+      });
+    });
+    super.initState();
   }
 }

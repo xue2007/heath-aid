@@ -3,7 +3,6 @@ import 'package:testing/conversation_screen.dart';
 import 'package:testing/database.dart';
 import 'package:testing/helper.dart';
 import 'package:testing/search.dart';
-
 import 'auth_constants.dart';
 
 class ChatRoom extends StatefulWidget {
