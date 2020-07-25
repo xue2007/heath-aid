@@ -8,11 +8,7 @@ import 'database.dart';
 
 
 class Profile extends StatefulWidget {
-  Profile({this.name, this.about,this.expertise, this.specialisation});
-  String name;
-  String about;
-  String expertise;
-  String specialisation;
+
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -50,6 +46,74 @@ class _ProfileState extends State<Profile> {
 
         ],
       ),
+      body: chatMessageList()
+    );
+  }
+  Widget chatMessageList() {
+    return StreamBuilder(
+      stream: chatMessageStream,
+      builder: (context, snapshot) {
+        return  snapshot.hasData ? SafeArea(
+          child: ListView.builder(
+              itemCount: snapshot.data.documents.length,
+              itemBuilder: (context, index) {
+                return ProfileDoctor(
+                    name:
+                    snapshot.data.documents[index].data['name'],
+                    about:
+                    snapshot.data.documents[index].data['about'],
+                    expertise:
+                    snapshot.data.documents[index].data['expertise'],
+                    specialisation:
+                    snapshot.data.documents[index].data['specialisation']
+
+                );}),
+        ) : CircularProgressIndicator();
+      },
+    );
+  }
+  @override
+  void initState() {
+    super.initState();
+    databaseMethods.getDoctorInfo('abc').then((value) {
+      setState(() {
+        chatMessageStream = value;
+      });
+    });
+
+  }
+}
+class ProfileDoctor extends StatelessWidget {
+  ProfileDoctor({@required this.name, @required this.about,@required this.expertise, @required this.specialisation});
+  final String name;
+  final String about;
+  final String expertise;
+  final String specialisation;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        // backgroundColor: Colors.transparent,
+        title: Text('Profile'),
+        elevation: 0.0,
+        brightness: Brightness.light,
+        iconTheme: IconThemeData(
+            color: Colors.black
+        ),
+        actions: <Widget>[
+          IconButton(
+            onPressed: (){
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (BuildContext context) => new EditDoctor()));
+
+            },
+            icon: Icon(Icons.edit),
+          ),
+
+        ],
+      ),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 24),
@@ -57,9 +121,7 @@ class _ProfileState extends State<Profile> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
-
                 children: <Widget>[
-                  chatMessageList(),
                   CircleAvatar(
                     backgroundColor: Colors.black,
                     radius:  50,
@@ -78,12 +140,11 @@ class _ProfileState extends State<Profile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "Dr. Brains",
+                          name,
                           style: TextStyle(fontSize: 32),
                         ),
                         Text(
-                          widget.specialisation,
-                          //'hi',
+                          specialisation,
                           style: TextStyle(fontSize: 19, color: Colors.grey),
                         ),
                         SizedBox(
@@ -325,37 +386,5 @@ class _ProfileState extends State<Profile> {
         ),
       ),
     );
-  }
-  Widget chatMessageList() {
-    return StreamBuilder(
-      stream: chatMessageStream,
-      builder: (context, snapshot) {
-        return  SafeArea(
-          child: ListView.builder(
-              itemCount: snapshot.data.documents.length,
-              itemBuilder: (context, index) {
-                return Profile(
-                    name:
-                    snapshot.data.documents[index].data['name'],
-                    about:
-                    snapshot.data.documents[index].data['about'],
-                    expertise:
-                    snapshot.data.documents[index].data['expertise'],
-                    specialisation:
-                    snapshot.data.documents[index].data['specialisation']
-
-                );}),
-        );
-      },
-    );
-  }
-  @override
-  void initState() {
-    databaseMethods.getDoctorInfo('a').then((value) {
-      setState(() {
-        chatMessageStream = value;
-      });
-    });
-    super.initState();
   }
 }

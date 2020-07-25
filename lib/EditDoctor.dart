@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'database.dart';
 import 'auth_constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'helper.dart';
 
 class EditDoctor extends StatefulWidget {
 
@@ -49,13 +49,14 @@ class _EditDoctorState extends State<EditDoctor> {
 
   }
   createProfile() {
+    String id =''+Constants.myName;
       Map<String, dynamic> profileMap = {
         'name':nameController.text,
         'specialisation':specialisationController.text,
         'about':aboutController.text,
         'expertise':expertiseController.text,
       };
-      databaseMethods.createDoctorProfile(nameController.text, profileMap);
+      databaseMethods.createDoctorProfile('abc', profileMap);
 
   }
 
