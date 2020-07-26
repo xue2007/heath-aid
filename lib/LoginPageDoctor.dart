@@ -174,7 +174,7 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
             padding: EdgeInsets.all(15.0),
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/cool1.jpg'), fit: BoxFit.cover)),
+                    image: AssetImage('assets/doctor_login.png'), fit: BoxFit.cover)),
             child: new Form(
               key: ky,
               child: new Column(

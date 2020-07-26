@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:testing/auth_constants.dart';
 import 'auth.dart';
+import 'database.dart';
+import 'helper.dart';
 
 import 'package:testing/patient_status.dart';
 import 'auth_provider.dart';
@@ -22,6 +24,7 @@ class AllUsersPage extends StatefulWidget {
 
 class _AllUsersPageState extends State<AllUsersPage> {
   static DateTime currentTime = new DateTime.now();
+  DataBase databaseMethods = new DataBase();
   String formattedDate =
       DateFormat('kk:mm:ss \n EEE d MMM').format(currentTime);
 
@@ -33,6 +36,28 @@ class _AllUsersPageState extends State<AllUsersPage> {
     } catch (e) {
       print(e);
     }
+  }
+  @override
+  void initState() {
+
+    super.initState();
+    getUserInfo();
+  }
+  getUserInfo() async {
+    Constants.myName = await HelperFunctions.getUserNameSharedPreference();
+  }
+  createProfile() {
+    String id = Constants.myName;
+    Map<String, dynamic> profileMap = {
+      'users':id,
+      'name':'',
+      'specialisation':'',
+      'about':'',
+      'expertise':'',
+      'address':''
+    };
+    databaseMethods.createDoctorProfile(id, profileMap);
+    databaseMethods.createDoctorDocuments(id, profileMap);
   }
 
   @override
@@ -86,6 +111,8 @@ class _AllUsersPageState extends State<AllUsersPage> {
               title: new Text('Profile'),
               onTap: () {
                 //Navigator.of(context).pop();
+                createProfile();
+
                 Navigator.push(
                     context,
                     new MaterialPageRoute(

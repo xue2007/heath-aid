@@ -76,12 +76,12 @@ class _ProfileState extends State<Profile> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              ok ? snapshot.data.documents[0]['name'] : '????',
+                               snapshot.data.documents[0]['name'] ,
                               style: TextStyle(fontSize: 32),
                             ),
 
                             Text(
-                              ok ? snapshot.data.documents[0]['specialisation']:'???',
+                              snapshot.data.documents[0]['specialisation'],
                               style: TextStyle(fontSize: 19, color: Colors.grey),
                             ),
                             SizedBox(
@@ -129,7 +129,7 @@ class _ProfileState extends State<Profile> {
                     height: 16,
                   ),
                   Text(
-                    ok ? snapshot.data.documents[0]['about'] :'???',
+                    snapshot.data.documents[0]['about'] ,
                     style: TextStyle(color: Colors.grey, fontSize: 16),
                   ),
                   SizedBox(
@@ -227,7 +227,7 @@ class _ProfileState extends State<Profile> {
                                     Container(
                                         width: MediaQuery.of(context).size.width - 268,
                                         child: Text(
-                                          ok ? snapshot.data.documents[0]['expertise'] : '???',
+                                          snapshot.data.documents[0]['expertise'] ,
                                           style: TextStyle(color: Colors.grey),
                                         ))
                                   ],
@@ -332,8 +332,7 @@ class _ProfileState extends State<Profile> {
   }
   getUserInfo() async {
     Constants.myName = await HelperFunctions.getUserNameSharedPreference();
-    Firestore.instance.collection('Patient').document(Constants.myName).get().then((exist) {exist.exists ? ok = true : ok = false;});
-    databaseMethods.getPatientInfo(Constants.myName).then((value) {
+    databaseMethods.getDoctorInfo(Constants.myName).then((value) {
       setState(() {
         chatMessageStream = value;
       });

@@ -58,7 +58,6 @@ class _EditDoctorState extends State<EditDoctor> {
   createProfile() {
       String id = Constants.myName;
       Map<String, dynamic> profileMap = {
-
         'users':id,
         'name':nameController.text,
         'specialisation':specialisationController.text,
@@ -68,7 +67,6 @@ class _EditDoctorState extends State<EditDoctor> {
       };
       databaseMethods.createDoctorProfile(id, profileMap);
       databaseMethods.createDoctorDocuments(id, profileMap);
-
   }
 
   Widget _buildAddressField() {

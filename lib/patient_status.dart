@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:testing/patient_profile.dart';
+import 'package:testing/SearchPatient.dart';
+import 'auth_constants.dart';
+import 'helper.dart';
+import 'database.dart';
+import 'DoctorPatient.dart';
+
+
 
 class PatientPage extends StatefulWidget {
   @override
@@ -9,10 +16,44 @@ class PatientPage extends StatefulWidget {
 class _PatientPageState extends State<PatientPage> with SingleTickerProviderStateMixin{
   TabController _tabController;
   ScrollController _scrollController;
-
+  DataBase databaseMethods = new DataBase();
+  Stream profileStream;
+@override
   void initState() {
     _tabController = new TabController(length: 2, vsync: this);
   _scrollController = new ScrollController();
+    getUserInfo();
+    super.initState();
+
+  }
+
+
+  getUserInfo() async {
+    Constants.myName = await HelperFunctions.getUserNameSharedPreference();
+    databaseMethods.getPatients(Constants.myName).then((value) {
+      setState(() {
+        profileStream = value;
+      });
+    });
+  }
+  Widget chatRoomList() {
+    return StreamBuilder(
+      stream: profileStream,
+      builder: (context, snapshot) {
+        return snapshot.hasData
+            ? ListView.builder(
+            itemCount: snapshot.data.documents.length,
+            itemBuilder: (context, index) {
+              return ChatRoomsTile(
+                  snapshot.data.documents[index].data['chatRoomId']
+                      .toString()
+                      .replaceAll('_', '')
+                      .replaceAll(Constants.myName, ''),
+                  snapshot.data.documents[index].data['chatRoomId']);
+            })
+            : Container();
+      },
+    );
   }
 
   @override
@@ -31,21 +72,24 @@ class _PatientPageState extends State<PatientPage> with SingleTickerProviderStat
             }
             ),
                 actions: <Widget>[
-                  IconButton(onPressed: (){
+                  IconButton(
+                    onPressed: () {
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (context) => new SearchPatient()));
+                  },
+                    icon: Icon(Icons.search),
 
-                  },icon: Icon(Icons.search),),
+                  ),
                   //Container(width:10.0,),
                   IconButton(onPressed: (){
 
                   },icon: Icon(Icons.more_vert),)
-
                 ],
                 pinned: true,
                 floating: true,
                 centerTitle: true,
                 backgroundColor: Colors.blueAccent,
                 title: Text('Patient Status'),
-
                 bottom:TabBar(
                   indicatorWeight: 4.0,
                   indicatorColor: Colors.white,
@@ -68,7 +112,7 @@ class _PatientPageState extends State<PatientPage> with SingleTickerProviderStat
           body: TabBarView(
             controller:  _tabController,
             children: [
-              PatientInformation(),
+              chatRoomList(),
               //Text('Patient'),
               Text('Favourite'),
             ],
@@ -78,6 +122,59 @@ class _PatientPageState extends State<PatientPage> with SingleTickerProviderStat
     );
   }
 }
+class ChatRoomsTile extends StatelessWidget {
+  final String name;
+  final String chatRoomId;
+  ChatRoomsTile(this.name, this.chatRoomId);
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DoctorPatient(name)));
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+        child: Row(
+          children: [
+            Container(
+              height: 30,
+              width: 30,
+              decoration: BoxDecoration(
+                  color: Colors.blue, borderRadius: BorderRadius.circular(30)),
+              child: Text(
+                name.substring(0, 1),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(name)
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/*
 
 class PatientInformation extends StatefulWidget {
 
@@ -122,4 +219,4 @@ class PatientInformationState extends State<PatientInformation> {
 
   }
   
-}
+}*/

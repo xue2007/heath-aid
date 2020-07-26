@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:testing/auth_constants.dart';
-
+import 'database.dart';
 import 'package:testing/chatroom.dart';
 import 'package:testing/data_upload_page.dart';
 import 'package:testing/doctor_homepage.dart';
@@ -12,6 +12,7 @@ import 'package:testing/patients.dart';
 import 'package:testing/user_profile.dart';
 import 'auth.dart';
 import 'auth_provider.dart';
+import 'helper.dart';
 
 var globalContext;
 
@@ -26,6 +27,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   static DateTime currentTime = new DateTime.now();
+  DataBase databaseMethods = new DataBase();
   String formattedDate =
       DateFormat('kk:mm:ss \n EEE d MMM').format(currentTime);
   void _signOut() async {
@@ -36,6 +38,34 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {
       print(e);
     }
+  }
+  @override
+  void initState() {
+
+    super.initState();
+    getUserInfo();
+  }
+  getUserInfo() async {
+    Constants.myName = await HelperFunctions.getUserNameSharedPreference();
+  }
+  createProfile() {
+    String id = Constants.myName;
+    Map<String, dynamic> profileMap = {
+
+      'users':id,
+      'age':'',
+      'name':'',
+      'bloodPressure':'',
+      'heartBeat':'',
+      'weight':'',
+      'fat':'',
+      'height':'',
+      'bloodGlucose' : '',
+
+    };
+    databaseMethods.createPatientProfile(id, profileMap);
+    databaseMethods.createPatientDocuments(id, profileMap);
+
   }
 
   @override
@@ -79,6 +109,7 @@ class _HomePageState extends State<HomePage> {
             new ListTile(
               title: new Text('Profile'),
               onTap: () {
+                createProfile();
                 Navigator.push(
                     context,
                     new MaterialPageRoute(

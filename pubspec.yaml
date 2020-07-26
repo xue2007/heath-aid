@@ -70,6 +70,9 @@ flutter:
     - assets/doctorCartoon.jpg
     - assets/patientCartoon.jpg
     - assets/chat.jpg
+    - assets/doctor_login.png
+    - assets/patient_login.png
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

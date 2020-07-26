@@ -39,7 +39,7 @@ class _PatientProfileState extends State<PatientProfile> {
 
   DataBase databaseMethods = new DataBase();
   Stream<QuerySnapshot> profileStream;
-  bool ok;
+
 
   Widget _buildBody(BuildContext context ){
     return StreamBuilder (
@@ -81,7 +81,7 @@ class _PatientProfileState extends State<PatientProfile> {
                             children: <Widget>[
                               SizedBox(height: 40,),
                               Text(
-                                  ok ? snapshot.data.documents[0]['name'] : '????',
+                                   snapshot.data.documents[0]['name'],
                                 style: TextStyle(fontSize: 20,color: Colors.white),
 
                               ),
@@ -149,7 +149,7 @@ class _PatientProfileState extends State<PatientProfile> {
                                   style: TextStyle(fontSize: 12,color: Colors.white),
                                 ),
                                   Text(
-                                      ok ? snapshot.data.documents[0]['age'] : '????',
+                                       snapshot.data.documents[0]['age'] ,
                                     style: TextStyle(fontSize: 12,color: Colors.white,fontWeight: FontWeight.bold),
                                   ),
                                   Text(
@@ -169,7 +169,7 @@ class _PatientProfileState extends State<PatientProfile> {
 
                                   ),
                                   Text(
-                                    ok ? snapshot.data.documents[0]['weight'] : '????',
+                                    snapshot.data.documents[0]['weight'] ,
                                     style: TextStyle(fontSize: 12,color: Colors.white,fontWeight: FontWeight.bold),
                                   ),
                                   Text(
@@ -188,7 +188,7 @@ class _PatientProfileState extends State<PatientProfile> {
 
                                   ),
                                   Text(
-                                  ok ? snapshot.data.documents[0]['fat'] : '????',
+                                   snapshot.data.documents[0]['fat'] ,
                                     style: TextStyle(fontSize: 12,color: Colors.white,fontWeight: FontWeight.bold),
                                   ),
                                   Text(
@@ -207,7 +207,7 @@ class _PatientProfileState extends State<PatientProfile> {
 
                                   ),
                                   Text(
-                                  ok ? snapshot.data.documents[0]['height'] : '????',
+                                  snapshot.data.documents[0]['height'] ,
                                     style: TextStyle(fontSize: 12,color: Colors.white,fontWeight: FontWeight.bold),
                                   ),
                                   Text(
@@ -253,7 +253,15 @@ class _PatientProfileState extends State<PatientProfile> {
                         ),
                       ),*/
                       SizedBox(height:10),
-                      _buildColor(),
+        Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+        _buildPatient(' Blood \n Pressure',   snapshot.data.documents[0]['bloodPressure'] , ' vmm/Hg',const Color(0xffff2e6a)),
+        _buildPatient(' Heart \n Beat', snapshot.data.documents[0]['heartBeat'] ,' per min',const Color(0xff1250f3)),
+        _buildPatient(' Blood \n Glucose',  snapshot.data.documents[0]['bloodGlucose']  , ' mg/dl',const Color(0xff14d083)),
+        ],
+        ),
                       SizedBox(height: 10,),
                       Text(
                         'Medication Reminders',
@@ -290,7 +298,7 @@ class _PatientProfileState extends State<PatientProfile> {
 
   getUserInfo() async {
     Constants.myName = await HelperFunctions.getUserNameSharedPreference();
-    Firestore.instance.collection('Patient').document(Constants.myName).get().then((exist) {exist.exists ? ok = true : ok = false;});
+    //Firestore.instance.collection('Patient').document(Constants.myName).get().then((exist) {exist.exists ? ok = true : ok = false;});
     databaseMethods.getPatientInfo(Constants.myName).then((value) {
       setState(() {
         profileStream = value;
@@ -298,22 +306,6 @@ class _PatientProfileState extends State<PatientProfile> {
     });
   }
 
-  Widget _buildColor() {
-    return StreamBuilder(
-      stream: profileStream,
-      builder: (context, snapshot) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            _buildPatient(' Blood \n Pressure',  ok ? snapshot.data.documents[0]['bloodPressure'] : '????', ' vmm/Hg',const Color(0xffff2e6a)),
-            _buildPatient(' Heart \n Beat', ok ? snapshot.data.documents[0]['heartBeat'] : '????',' per min',const Color(0xff1250f3)),
-            _buildPatient(' Blood \n Glucose', ok ? snapshot.data.documents[0]['bloodGlucose'] : '????' , ' mg/dl',const Color(0xff14d083)),
-          ],
-        );
-      }
-    );
-  }
   Widget _buildPatient(String title,String subtitle,String symbol,var color){
     return Flexible(
       flex: 5,
