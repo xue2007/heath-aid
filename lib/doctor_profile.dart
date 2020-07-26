@@ -19,7 +19,7 @@ class _ProfileState extends State<Profile> {
 
   DataBase databaseMethods = new DataBase();
   Stream<QuerySnapshot> chatMessageStream;
-
+  bool ok;
 
 
 
@@ -49,6 +49,7 @@ class _ProfileState extends State<Profile> {
       body: StreamBuilder(
         stream: chatMessageStream,
         builder: (context, snapshot) {
+
           return snapshot.hasData ? SingleChildScrollView(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 24),
@@ -75,12 +76,12 @@ class _ProfileState extends State<Profile> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                             snapshot.data.documents[0]['name'],
+                              ok ? snapshot.data.documents[0]['name'] : '????',
                               style: TextStyle(fontSize: 32),
                             ),
 
                             Text(
-                              snapshot.data.documents[0]['specialisation'],
+                              ok ? snapshot.data.documents[0]['specialisation']:'???',
                               style: TextStyle(fontSize: 19, color: Colors.grey),
                             ),
                             SizedBox(
@@ -128,7 +129,7 @@ class _ProfileState extends State<Profile> {
                     height: 16,
                   ),
                   Text(
-                    snapshot.data.documents[0]['about'],
+                    ok ? snapshot.data.documents[0]['about'] :'???',
                     style: TextStyle(color: Colors.grey, fontSize: 16),
                   ),
                   SizedBox(
@@ -226,7 +227,7 @@ class _ProfileState extends State<Profile> {
                                     Container(
                                         width: MediaQuery.of(context).size.width - 268,
                                         child: Text(
-                                          snapshot.data.documents[0]['expertise'],
+                                          ok ? snapshot.data.documents[0]['expertise'] : '???',
                                           style: TextStyle(color: Colors.grey),
                                         ))
                                   ],
@@ -331,11 +332,13 @@ class _ProfileState extends State<Profile> {
   }
   getUserInfo() async {
     Constants.myName = await HelperFunctions.getUserNameSharedPreference();
-    databaseMethods.getDoctorInfo(Constants.myName).then((value) {
+    Firestore.instance.collection('Patient').document(Constants.myName).get().then((exist) {exist.exists ? ok = true : ok = false;});
+    databaseMethods.getPatientInfo(Constants.myName).then((value) {
       setState(() {
         chatMessageStream = value;
       });
     });
   }
 }
+
 

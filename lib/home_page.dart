@@ -7,6 +7,8 @@ import 'package:testing/chatroom.dart';
 import 'package:testing/data_upload_page.dart';
 import 'package:testing/doctor_homepage.dart';
 import 'package:testing/login_page.dart';
+import 'package:testing/patient_profile.dart';
+import 'package:testing/patients.dart';
 import 'package:testing/user_profile.dart';
 import 'auth.dart';
 import 'auth_provider.dart';
@@ -72,6 +74,15 @@ class _HomePageState extends State<HomePage> {
                     context,
                     new MaterialPageRoute(
                         builder: (BuildContext context) => new ChatRoom()));
+              },
+            ),
+            new ListTile(
+              title: new Text('Profile'),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (BuildContext context) => new PatientProfile()));
               },
             ),
             new ListTile(

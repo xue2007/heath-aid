@@ -32,15 +32,30 @@ class DataBase {
   Future<void> createDoctorProfile(String id,profileMap){
     Firestore.instance.collection('Doctor')
         .document(id).setData(profileMap).catchError((e){
-          print(e.toString());
+      print(e.toString());
     });
   }
   Future<bool>createDoctorDocuments(String id,profileMap){
     Firestore.instance.collection('Doctor')
         .document(id)
-    .collection('profile')
-    .document(id)
-    .setData(profileMap).catchError((e){
+        .collection('profile')
+        .document(id)
+        .setData(profileMap).catchError((e){
+      print(e.toString());
+    });
+  }
+  Future<void> createPatientProfile(String id,profileMap){
+    Firestore.instance.collection('Patient')
+        .document(id).setData(profileMap).catchError((e){
+      print(e.toString());
+    });
+  }
+  Future<bool>createPatientDocuments(String id,profileMap){
+    Firestore.instance.collection('Patient')
+        .document(id)
+        .collection('profile')
+        .document(id)
+        .setData(profileMap).catchError((e){
       print(e.toString());
     });
   }
@@ -68,10 +83,14 @@ class DataBase {
   }
   getDoctorInfo(String id) async {
     return await Firestore.instance.collection('Doctor')
-    .document(id).collection('profile')
+        .document(id).collection('profile')
         .snapshots();
   }
-
+  getPatientInfo(String id) async {
+    return await Firestore.instance.collection('Patient')
+        .document(id).collection('profile')
+        .snapshots();
+  }
 
 
   getChatRooms(String id) async{
