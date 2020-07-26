@@ -17,6 +17,7 @@ class _EditDoctorState extends State<EditDoctor> {
   TextEditingController specialisationController = new TextEditingController();
   TextEditingController aboutController = new TextEditingController();
   TextEditingController expertiseController = new TextEditingController();
+  TextEditingController addressController = new TextEditingController();
 
 
   @override
@@ -33,11 +34,13 @@ class _EditDoctorState extends State<EditDoctor> {
             _buildSpecialisationField(),
             _buildAboutField(),
             _buildExpertiseField(),
+            _buildAddressField(),
             RaisedButton(
               child:Text('Update Profile'),
               onPressed: (){
                 createProfile();
-                displayAlert();
+
+                Navigator.pop(context);
               },
             ),
           ],
@@ -49,18 +52,37 @@ class _EditDoctorState extends State<EditDoctor> {
 
   }
   createProfile() {
-    String id =''+Constants.myName;
+      String id = 'a'+Constants.myName;
+
       Map<String, dynamic> profileMap = {
+
+        'users':id,
         'name':nameController.text,
         'specialisation':specialisationController.text,
         'about':aboutController.text,
         'expertise':expertiseController.text,
+        'address':addressController.text
       };
-      databaseMethods.createDoctorProfile('abc', profileMap);
+      databaseMethods.createDoctorProfile(id, profileMap);
 
   }
 
+  Widget _buildAddressField() {
+    return TextFormField(
+      decoration: InputDecoration(labelText: 'Address'),
+      controller: addressController,
+      validator: (String value){
+        if(value.isEmpty){
+          return 'Address is required';
+        }
+        return null;
+      },
+      onSaved: (String value){
+        addressController.text = value;
+      },
 
+    );
+  }
   Widget _buildSpecialisationField() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Specialisation'),
@@ -117,7 +139,7 @@ class _EditDoctorState extends State<EditDoctor> {
       controller: expertiseController,
       validator: (String value){
         if(value.isEmpty){
-          return 'Name is required';
+          return 'Expertise is required';
         }
         return null;
       },
@@ -127,36 +149,5 @@ class _EditDoctorState extends State<EditDoctor> {
 
     );
   }
-  Widget displayAlert() {
-    String _error = 'submitted';
-    if (_error != null) {
-      return Container(
-        color: Colors.orange,
-        width: double.infinity,
-        padding: EdgeInsets.all(10),
-        child: Row(
-          children: <Widget>[
-            Icon(Icons.error_outline),
-            SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child: Text('uploaded'),
-            ),
-            IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () {
-                setState(() {
-                  _error = null;
-                });
-              },
-            )
-          ],
-        ),
-      );
-    }
-    return null;
-  }
-
 
 }

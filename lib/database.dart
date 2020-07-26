@@ -59,7 +59,7 @@ class DataBase {
   }
   getDoctorInfo(String id) async {
     return await Firestore.instance.collection('Doctor')
-        .document(id)
+    //.where('users',arrayContains: id)
         .snapshots();
   }
 
