@@ -35,6 +35,15 @@ class DataBase {
           print(e.toString());
     });
   }
+  Future<bool>createDoctorDocuments(String id,profileMap){
+    Firestore.instance.collection('Doctor')
+        .document(id)
+    .collection('profile')
+    .document(id)
+    .setData(profileMap).catchError((e){
+      print(e.toString());
+    });
+  }
 
 
   Future<bool> createChatRoom(String id,chatRoomMap) {
@@ -59,7 +68,7 @@ class DataBase {
   }
   getDoctorInfo(String id) async {
     return await Firestore.instance.collection('Doctor')
-    //.where('users',arrayContains: id)
+    .document(id).collection('profile')
         .snapshots();
   }
 

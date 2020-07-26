@@ -4,6 +4,7 @@ import 'EditDoctor.dart';
 import'package:cloud_firestore/cloud_firestore.dart';
 import 'database.dart';
 import 'auth_constants.dart';
+import 'helper.dart';
 
 
 
@@ -325,12 +326,16 @@ class _ProfileState extends State<Profile> {
   }
   @override
   void initState() {
-    databaseMethods.getDoctorInfo('a'+Constants.myName).then((value) {
+    getUserInfo();
+    super.initState();
+  }
+  getUserInfo() async {
+    Constants.myName = await HelperFunctions.getUserNameSharedPreference();
+    databaseMethods.getDoctorInfo(Constants.myName).then((value) {
       setState(() {
         chatMessageStream = value;
       });
     });
-    super.initState();
   }
 }
 

@@ -39,7 +39,6 @@ class _EditDoctorState extends State<EditDoctor> {
               child:Text('Update Profile'),
               onPressed: (){
                 createProfile();
-
                 Navigator.pop(context);
               },
             ),
@@ -51,9 +50,13 @@ class _EditDoctorState extends State<EditDoctor> {
       );
 
   }
-  createProfile() {
-      String id = 'a'+Constants.myName;
+  @override
+  void initState() {
+    super.initState();
+  }
 
+  createProfile() {
+      String id = Constants.myName;
       Map<String, dynamic> profileMap = {
 
         'users':id,
@@ -64,6 +67,7 @@ class _EditDoctorState extends State<EditDoctor> {
         'address':addressController.text
       };
       databaseMethods.createDoctorProfile(id, profileMap);
+      databaseMethods.createDoctorDocuments(id, profileMap);
 
   }
 
