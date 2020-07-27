@@ -5,10 +5,8 @@ import 'package:testing/auth_constants.dart';
 import 'database.dart';
 import 'package:testing/chatroom.dart';
 import 'package:testing/data_upload_page.dart';
-import 'package:testing/doctor_homepage.dart';
-import 'package:testing/login_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testing/patient_profile.dart';
-import 'package:testing/patients.dart';
 import 'package:testing/user_profile.dart';
 import 'auth.dart';
 import 'auth_provider.dart';
@@ -41,9 +39,9 @@ class _HomePageState extends State<HomePage> {
   }
   @override
   void initState() {
-
-    super.initState();
     getUserInfo();
+    super.initState();
+
   }
   getUserInfo() async {
     Constants.myName = await HelperFunctions.getUserNameSharedPreference();
@@ -80,7 +78,7 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           children: <Widget>[
             new UserAccountsDrawerHeader(
-              //accountName: new Text(Constants.myName),
+              accountName: new Text(Constants.myName),
               //accountEmail: new Text('bye'),
               currentAccountPicture: new CircleAvatar(
                 backgroundImage: AssetImage('assets/patientCartoon.jpg'),
@@ -109,7 +107,12 @@ class _HomePageState extends State<HomePage> {
             new ListTile(
               title: new Text('Profile'),
               onTap: () {
-                createProfile();
+                Firestore.instance.collection('Patient').document(Constants.myName).get().then((exist) {
+                  if(!exist.exists) {
+                    createProfile();
+                  }
+                });
+
                 Navigator.push(
                     context,
                     new MaterialPageRoute(

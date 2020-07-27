@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'auth_provider.dart';
 import 'auth.dart';
 import 'root_page.dart';
+import 'package:flutter/services.dart';
 
 
 void main() {
+  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
   runApp(new MyApp());
 }
 

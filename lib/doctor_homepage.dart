@@ -5,13 +5,13 @@ import 'package:testing/auth_constants.dart';
 import 'auth.dart';
 import 'database.dart';
 import 'helper.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testing/patient_status.dart';
 import 'auth_provider.dart';
 import 'doctor_profile.dart';
 import 'chatroom.dart';
 import 'myPatient_card.dart';
-import 'notification_card.dart';
+
 
 class AllUsersPage extends StatefulWidget {
   AllUsersPage({this.auth, this.onSignedOut});
@@ -25,6 +25,7 @@ class AllUsersPage extends StatefulWidget {
 class _AllUsersPageState extends State<AllUsersPage> {
   static DateTime currentTime = new DateTime.now();
   DataBase databaseMethods = new DataBase();
+  Stream profileStream;
   String formattedDate =
       DateFormat('kk:mm:ss \n EEE d MMM').format(currentTime);
 
@@ -38,13 +39,18 @@ class _AllUsersPageState extends State<AllUsersPage> {
     }
   }
   @override
-  void initState() {
-
+  void initState(){
+  getUserInfo();
     super.initState();
-    getUserInfo();
+
   }
   getUserInfo() async {
     Constants.myName = await HelperFunctions.getUserNameSharedPreference();
+    databaseMethods.getPatients(Constants.myName).then((value) {
+      setState(() {
+        profileStream = value;
+      });
+    });
   }
   createProfile() {
     String id = Constants.myName;
@@ -73,7 +79,7 @@ class _AllUsersPageState extends State<AllUsersPage> {
         child: ListView(
           children: <Widget>[
             new UserAccountsDrawerHeader(
-              // accountName: new Text(Constants.myName),
+               accountName: new Text(Constants.myName),
               //accountEmail: new Text('bye'),
               currentAccountPicture: new CircleAvatar(
                 backgroundImage: AssetImage('assets/doctorCartoon.jpg'),
@@ -111,7 +117,13 @@ class _AllUsersPageState extends State<AllUsersPage> {
               title: new Text('Profile'),
               onTap: () {
                 //Navigator.of(context).pop();
-                createProfile();
+
+                Firestore.instance.collection('Doctor').document(Constants.myName).get().then((exist) {
+                  if(!exist.exists) {
+                    createProfile();
+                  }
+                });
+
 
                 Navigator.push(
                     context,
@@ -167,7 +179,7 @@ class _AllUsersPageState extends State<AllUsersPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            " Welcome Doctor",
+                            " Welcome Doctor " +Constants.myName,
                             style: TextStyle(fontSize: 32),
                           ),
                           SizedBox(
@@ -245,7 +257,7 @@ class _AllUsersPageState extends State<AllUsersPage> {
                     height: 10,
                   ),
                   Text(
-                    'Medication Reminders',
+                    'Patients Currently',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -280,6 +292,109 @@ class _AllUsersPageState extends State<AllUsersPage> {
         width: MediaQuery.of(context).size.width,
         child: child,
       ),
+    );
+  }
+  Widget chatRoomList() {
+    return StreamBuilder(
+      stream: profileStream,
+      builder: (context, snapshot) {
+        return snapshot.hasData
+            ? ListView.builder(
+            itemCount: snapshot.data.documents.length,
+            itemBuilder: (context, index) {
+              return NotificationCard(
+                  name:snapshot.data.documents[index].data['chatRoomId']
+                      .toString()
+                      .replaceAll('_', '')
+                      .replaceAll(Constants.myName, ''),
+                  illness:
+                  snapshot.data.documents[index].data['age'],
+                time:formattedDate
+                ,);
+            })
+            : Container();
+      },
+    );
+  }
+}
+
+
+class NotificationCard extends StatelessWidget {
+
+  final String name;
+  final String illness;
+  final String time;
+  const NotificationCard({
+    Key key, this.name,this.illness,this.time
+  }) : super (key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        padding: const EdgeInsets.only(left:2),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          color: Colors.white,
+        ),
+        child: Container(
+            color: Colors.white,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.grey,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage('assets/cool1.jpg'),
+                      )
+                  ),
+                ),
+                Container(
+                  width: 100,
+                  child: ListTile(
+                    title: Text(
+                      name,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    subtitle: Text(illness),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      time,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Icon(
+                      Icons.check_circle,
+                      size: 30,
+                      color: Colors.green,
+                    ),
+                    IconButton(
+                      icon:Icon(Icons.add),
+                      iconSize: 30,
+                      color: Colors.orange,
+                      onPressed: (){
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            )
+        )
     );
   }
 }

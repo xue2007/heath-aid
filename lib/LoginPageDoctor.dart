@@ -246,7 +246,7 @@ class _LoginPageDoctorState extends State<LoginPageDoctor> {
                       ],
                     ),
                   ),
-                  padding: const EdgeInsets.only(
+                  padding:  EdgeInsets.only(
                       left: 160, right: 160, top: 8, bottom: 8),
                   child: const Text('Login', style: TextStyle(fontSize: 20)),
                 ),
