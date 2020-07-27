@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 import 'auth_provider.dart';
 import 'auth.dart';
 import 'root_page.dart';
-
+import 'package:flutter/services.dart';
 
 void main() {
-<<<<<<< HEAD
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
-=======
->>>>>>> parent of 3d9a146... updated profile errors
+
   runApp(new MyApp());
 }
 
-class MyApp extends StatelessWidget{
+class MyApp extends StatelessWidget {
   @override
   Widget build(context) {
     return AuthProvider(
@@ -24,7 +22,7 @@ class MyApp extends StatelessWidget{
         theme: new ThemeData(
           primarySwatch: Colors.blue,
         ),
-      home: RootPage(),
+        home: RootPage(),
       ),
     );
   }
