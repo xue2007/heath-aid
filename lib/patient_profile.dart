@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'chatroom.dart';
+import 'myPatient_card.dart';
+import 'notification_card.dart';
 import 'database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'helper.dart';
@@ -270,73 +272,11 @@ class _PatientProfileState extends State<PatientProfile> {
                       ),
                       SizedBox(height: 10,),
                       _buildCard(context,
-                          child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height,
-                              padding: const EdgeInsets.only(left:2),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                color: Colors.white,
-                              ),
-                              child: Container(
-                                  color: Colors.white,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Container(
-                                        width: 40,
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.grey,
-                                            image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: AssetImage('assets/cool1.jpg'),
-                                            )
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 100,
-                                        child: ListTile(
-                                          title: Text(
-                                            'name',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          subtitle: Text('illness'),
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          Text(
-                                            'time',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          SizedBox(width: 10),
-                                          Icon(
-                                            Icons.check_circle,
-                                            size: 30,
-                                            color: Colors.green,
-                                          ),
-                                          IconButton(
-                                            icon:Icon(Icons.add),
-                                            iconSize: 30,
-                                            color: Colors.orange,
-                                            onPressed: (){
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  )
-                              )
-                          ),
+                          child: NotificationCard(
+                            name: 'Patient1',
+                            illness: 'Diabetes',
+                            time: '10pm',
+                          )
                       )
                     ],
                   ),

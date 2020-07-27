@@ -8,7 +8,6 @@ import 'auth_provider.dart';
 import 'helper.dart';
 import 'database.dart';
 
-
 class LoginPage extends StatefulWidget {
   LoginPage({this.auth, this.onSignedIn, this.backToMain});
 
@@ -26,7 +25,6 @@ enum FormType {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   DataBase databaseMethods = new DataBase();
   final ky = new GlobalKey<FormState>();
   String _email;

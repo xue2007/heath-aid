@@ -19,7 +19,7 @@ class _ProfileState extends State<Profile> {
 
   DataBase databaseMethods = new DataBase();
   Stream<QuerySnapshot> chatMessageStream;
-  //bool ok;
+  bool ok;
 
 
 
@@ -161,7 +161,7 @@ class _ProfileState extends State<Profile> {
                                     Container(
                                         width: MediaQuery.of(context).size.width - 268,
                                         child: Text(
-                                          snapshot.data.documents[0]['address'],
+                                          "Kent Ridge road,Singapore ",
                                           style: TextStyle(color: Colors.grey),
                                         ))
                                   ],
